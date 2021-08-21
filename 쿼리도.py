@@ -21,3 +21,12 @@ for i in range(19):
         if j == 0 or j == 18 or i == 0 or i == 18:
             board[i, j] = 3
 
+
+# 객체 생성 예시 a = Object("d", [1, 2], (1, 2)) 2번째는 대괄호, 3번째는 소괄호여야 함.
+# 대괄호로 만든건 값을 변경할 수 있지만 소괄호로 만든건 값을 변경할 수 없음
+# 좌표는 계속 변하지만 크기는 변하지 않으므로 이렇게 설정함
+class Object:
+    def __init__(self, src: str, pos: list[int], size: tuple[int, int]):
+        self.img = src
+        self.pos = pos
+        self.size = size
