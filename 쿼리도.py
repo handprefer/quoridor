@@ -20,3 +20,4 @@ for i in range(19):
     for j in range(19):
         if j == 0 or j == 18 or i == 0 or i == 18:
             board[i, j] = 3
+
