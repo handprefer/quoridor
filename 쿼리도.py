@@ -1,6 +1,11 @@
 import numpy as np
 import pygame
 
+def text(text_value,text_size,c1,c2,c3):
+    font=pygame.font.SysFont('malgungothic',text_size)
+    text=font.render(text_value,True,(c1,c2,c3))
+    return text
+
 pygame.init()
 screen = pygame.display.set_mode((900, 500))
 pygame.display.set_caption("쿼리도")
@@ -20,4 +25,3 @@ for i in range(19):
     for j in range(19):
         if j == 0 or j == 18 or i == 0 or i == 18:
             board[i, j] = 3
-
