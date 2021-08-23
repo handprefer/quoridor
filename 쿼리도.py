@@ -35,10 +35,10 @@ class Object:
 
 
 board = Object("판.png", [200, 0], (500, 500))
-horizon_wall1 = Object("가로벽.png", [44, 100], (111, 3))
-vertical_wall1 = Object("세로벽.png", [99, 247], (3, 111))
-horizon_wall2 = Object("가로벽.png", [744, 300], (111, 3))
-vertical_wall2 = Object("세로벽.png", [799, 47], (3, 111))
+horizon_wall1 = Object("가로벽.png", [44, 110], (111, 3))
+vertical_wall1 = Object("세로벽.png", [99, 257], (3, 111))
+horizon_wall2 = Object("가로벽.png", [744, 310], (111, 3))
+vertical_wall2 = Object("세로벽.png", [799, 57], (3, 111))
 black_user = Object("흑.png", [203, 224], (55, 55))
 white_user = Object("백.png", [647, 224], (55, 55))
 
@@ -69,6 +69,7 @@ def board_loading():
     )
 
 
+# 돌을 클릭 했는지 확인하기 위함
 def user_click_event(user):
     if user == "black":
         if black_user.pos[0] < pygame.mouse.get_pos()[0] < black_user.pos[0] + 55 and \
@@ -81,6 +82,7 @@ def user_click_event(user):
     return False
 
 
+# 벽을 클릭 했는지 확인하기 위함
 def wall_click_event(user, wall):
     if user == "black":
         if wall == "vertical":
@@ -94,11 +96,11 @@ def wall_click_event(user, wall):
     if user == "white":
         if wall == "vertical":
             if vertical_wall2.pos[0] <= pygame.mouse.get_pos()[0] <= vertical_wall2.pos[0] + 140 and \
-                    vertical_wall2[1] <= pygame.mouse.get_pos()[1] <= vertical_wall2.pos[1] + 140:
+                    vertical_wall2.pos[1] <= pygame.mouse.get_pos()[1] <= vertical_wall2.pos[1] + 140:
                 return True
         if wall == "horizon":
-            if horizon_wall2[0] <= pygame.mouse.get_pos()[0] <= horizon_wall2.pos[0] + 140 and \
-                    horizon_wall2[1] <= pygame.mouse.get_pos()[1] <= horizon_wall2.pos[1] + 140:
+            if horizon_wall2.pos[0] <= pygame.mouse.get_pos()[0] <= horizon_wall2.pos[0] + 140 and \
+                    horizon_wall2.pos[1] <= pygame.mouse.get_pos()[1] <= horizon_wall2.pos[1] + 140:
                 return True
     return False
 
@@ -117,10 +119,46 @@ def game(turn):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if user_click_event(turn):
                     if turn == "black":
+                        game_black(turn)
+                    elif turn == "white":
+                        game_white(turn)
+                elif wall_click_event(turn, "vertical"):
+                    game_vertical(turn)
+                elif wall_click_event(turn, "horizon"):
+                    game_horizon(turn)
+
+
+# turn 매개변수의 타입은 Str, 값은 black, white 가질 수 있음
+def game_vertical(turn):
+    display_base_objects()
+    board_loading()
+    pygame.display.update()
+    temp_wall = Object("세로벽.png", [99, 247], (3, 111))
+    while True:
+        clock.tick(59)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEMOTION:
+                temp_wall.pos = pygame.mouse.get_pos()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if user_click_event(turn):
+                    if turn == "black":
                         game_black()
                     elif turn == "white":
                         game_white()
-                elif wall_click_event(turn, "vertical"):
-                    game_vertical()
                 elif wall_click_event(turn, "horizon"):
-                    game_horizon()
+                    game_horizon(turn)
+                elif board_check(pygame.mouse.get_pos()):
+                    # TODO: 보드판에 벽을 놓을때 발생할 함수를 만들어야 함.
+                    pass
+        display_base_objects()
+        board_loading()
+        screen.blit(temp_wall.img,
+                    [temp_wall.pos[0] - temp_wall.size[0] // 2, temp_wall.pos[1] - temp_wall.size[1] // 2]
+                    )
+        pygame.display.update()
+
+
+game("black")
