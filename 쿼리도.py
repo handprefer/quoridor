@@ -1,6 +1,8 @@
 import numpy as np
 import pygame
 
+#text("글자",글자크기,컬러1,컬러2,컬러3)
+#예시 : screen.blit(text("hi",50,255,255,255),self_pos)
 def text(text_value,text_size,c1,c2,c3):
     font=pygame.font.SysFont('malgungothic',text_size)
     text=font.render(text_value,True,(c1,c2,c3))
