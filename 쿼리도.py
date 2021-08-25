@@ -1,3 +1,4 @@
+#click_cell,user_checker만들기 114번째줄, 바로밑에
 import sys
 
 import numpy as np
@@ -112,15 +113,23 @@ def wall_click_event(user, wall):
 
 click_location=[0,0]
 def click_cell(position):   #ex) click_cell(pygame.mouse.get_pos()) \n print(click_location)
-    if 0<=(position[0]-200)%56<=53:
-        click_location[0]=((position[0]-200)//56)*2+1
+    if 0<=(position[0]-204)%56<=49:
+        click_location[0]=((position[0]-204)//56)*2+1
     else:
-        click_location[0]=((position[0]-200)//56)*2+2
+        click_location[0]=((position[0]-204)//56)*2+2
     
-    if 0<=(position[1])%56<=53:
-        click_location[1]=((position[1])//56)*2+1
+    if 0<=(position[1]-5)%56<=49:
+        click_location[1]=((position[1]-5)//56)*2+1
     else:
-        click_location[1]=((position[1])//56)*2+2
+        click_location[1]=((position[1]-5)//56)*2+2
+
+    
+def user_checker(turn):
+    click_cell(pygame.mouse.get_pos())
+    print(board_array[click_location[0],click_location[1]])
+    print(click_location)
+    print(pygame.mouse.get_pos())
+
 
 run = True
 
@@ -140,9 +149,11 @@ def game(turn):
                     if turn == "black":
                         #game_black()
                         print("black")
+                        user_checker(turn)
                     elif turn == "white":
                         #game_white()
                         print("white")
+                        user_checker(turn)
                 elif wall_click_event(turn, "vertical"):
                     #game_vertical()
                     print("vertical")
