@@ -3,7 +3,6 @@ import sys
 import numpy as np
 import pygame
 
-
 # text("글자",글자크기,컬러1,컬러2,컬러3)
 # 예시 : screen.blit(text("hi",50,255,255,255),self_pos)
 def text(text_value, text_size, c1, c2, c3):
@@ -12,25 +11,28 @@ def text(text_value, text_size, c1, c2, c3):
     return text
 
 
+
 pygame.init()
 screen = pygame.display.set_mode((900, 500))
 pygame.display.set_caption("쿼리도")
 clock = pygame.time.Clock()
 
-board_ = np.zeros((19, 19))
+board_array = np.zeros((19, 19))
+
 
 # 홀수, 홀수 돌을 둘 수 있는 곳이고 나머지는 벽을 둘 수 있는 곳
 for i in range(19):
     for j in range(19):
         if i % 2 == 1 and j % 2 == 1:
-            board_[i, j] = 0
+            board_array[i, j] = 0
         else:
-            board_[i, j] = 3
+            board_array[i, j] = 3
 
 for i in range(19):
     for j in range(19):
         if j == 0 or j == 18 or i == 0 or i == 18:
-            board_[i, j] = 4
+            board_array[i, j] = 4
+
 
 
 # 객체 생성 예시 a = Object("d", [1, 2], (1, 2)) 2번째는 대괄호, 3번째는 소괄호여야 함.
@@ -41,9 +43,6 @@ class Object:
         self.img = pygame.image.load(src).convert()
         self.pos = pos
         self.size = size
-
-    def blit(self, pos):
-        screen.blit(self, pos)
 
 
 board = Object("판.png", [200, 0], (500, 500))
@@ -57,10 +56,10 @@ white_user = Object("백.png", [647, 224], (55, 55))
 
 def display_base_objects():
     screen.fill((255, 255, 255))
-    pygame.draw.rect(screen, (0, 0, 0), [30, 43, 140, 140])
-    pygame.draw.rect(screen, (0, 0, 0), [30, 243, 140, 140])
-    pygame.draw.rect(screen, (0, 0, 0), [730, 43, 140, 140])
-    pygame.draw.rect(screen, (0, 0, 0), [730, 243, 140, 140])
+    pygame.draw.polygon(screen,(150,150,150),[(30,63),(50,43),(150,43),(170,63),(170,163),(150,183),(50,183),(30,163)])
+    pygame.draw.polygon(screen,(150,150,150),[(50,243),(170,243),(170,383),(30,383),(30,263)])
+    pygame.draw.polygon(screen,(150,150,150),[(750,43),(870,43),(870,183),(730,183),(730,63)])
+    pygame.draw.polygon(screen,(150,150,150),[(750,243),(870,243),(870,383),(730,383),(730,263)])
     screen.blits(
         (
             (board.img, board.pos),
@@ -81,20 +80,17 @@ def board_loading():
     )
 
 
-# 돌을 클릭 했는지 확인하기 위함
 def user_click_event(user):
     if user == "black":
         if black_user.pos[0] < pygame.mouse.get_pos()[0] < black_user.pos[0] + 55 and \
                 black_user.pos[1] < pygame.mouse.get_pos()[1] < black_user.pos[1] + 55:
             return True
-    if user == "white:":
+    if user == "white":
         if white_user.pos[0] < pygame.mouse.get_pos()[0] < white_user.pos[0] + 55 and \
                 white_user.pos[1] < pygame.mouse.get_pos()[1] < white_user.pos[1] + 55:
             return True
     return False
 
-
-# 벽을 클릭 했는지 확인하기 위함
 def wall_click_event(user, wall):
     if user == "black":
         if wall == "vertical":
@@ -105,7 +101,7 @@ def wall_click_event(user, wall):
             if horizon_wall1.pos[0] <= pygame.mouse.get_pos()[0] <= horizon_wall1.pos[0] + 140 and \
                     horizon_wall1.pos[1] <= pygame.mouse.get_pos()[1] <= horizon_wall1.pos[1] + 140:
                 return True
-    if user == "white":
+    elif user == "white":
         if wall == "vertical":
             if vertical_wall2.pos[0] <= pygame.mouse.get_pos()[0] <= vertical_wall2.pos[0] + 140 and \
                     vertical_wall2.pos[1] <= pygame.mouse.get_pos()[1] <= vertical_wall2.pos[1] + 140:
@@ -115,6 +111,18 @@ def wall_click_event(user, wall):
                     horizon_wall2.pos[1] <= pygame.mouse.get_pos()[1] <= horizon_wall2.pos[1] + 140:
                 return True
     return False
+
+click_location=[0,0]
+def click_cell(position):   #ex) click_cell(pygame.mouse.get_pos()) \n print(click_location)
+    if 0<=(position[0]-200)%56<=53:
+        click_location[0]=((position[0]-200)//56)*2+1
+    else:
+        click_location[0]=((position[0]-200)//56)*2+2
+    
+    if 0<=(position[1])%56<=53:
+        click_location[1]=((position[1])//56)*2+1
+    else:
+        click_location[1]=((position[1])//56)*2+2
 
 
 # turn 매개변수의 타입은 Str, 값은 black, white 가질 수 있음
