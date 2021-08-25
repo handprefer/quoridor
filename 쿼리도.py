@@ -118,10 +118,10 @@ def click_cell(position):   #ex) click_cell(pygame.mouse.get_pos()) \n print(cli
     else:
         click_location[0]=((position[0]-204)//56)*2+2
     
-    if 0<=(position[1]-5)%56<=49:
-        click_location[1]=((position[1]-5)//56)*2+1
+    if 0<=(position[1]-3)%56<=49:
+        click_location[1]=((position[1]-3)//56)*2+1
     else:
-        click_location[1]=((position[1]-5)//56)*2+2
+        click_location[1]=((position[1]-3)//56)*2+2
 
     
 def user_checker(turn):
