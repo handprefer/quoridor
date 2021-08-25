@@ -140,11 +140,9 @@ def game(turn):
                     if turn == "black":
                         #game_black()
                         print("black")
-                        user_checker(turn)
                     elif turn == "white":
                         #game_white()
                         print("white")
-                        user_checker(turn)
                 elif wall_click_event(turn, "vertical"):
                     #game_vertical()
                     print("vertical")
