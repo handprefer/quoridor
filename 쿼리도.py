@@ -3,32 +3,34 @@ import sys
 import numpy as np
 import pygame
 
-#text("글자",글자크기,컬러1,컬러2,컬러3)
-#예시 : screen.blit(text("hi",50,255,255,255),self_pos)
-def text(text_value,text_size,c1,c2,c3):
-    font=pygame.font.SysFont('malgungothic',text_size)
-    text=font.render(text_value,True,(c1,c2,c3))
+
+# text("글자",글자크기,컬러1,컬러2,컬러3)
+# 예시 : screen.blit(text("hi",50,255,255,255),self_pos)
+def text(text_value, text_size, c1, c2, c3):
+    font = pygame.font.SysFont('malgungothic', text_size)
+    text = font.render(text_value, True, (c1, c2, c3))
     return text
+
 
 pygame.init()
 screen = pygame.display.set_mode((900, 500))
 pygame.display.set_caption("쿼리도")
 clock = pygame.time.Clock()
 
-board = np.zeros((19, 19))
+board_ = np.zeros((19, 19))
 
 # 홀수, 홀수 돌을 둘 수 있는 곳이고 나머지는 벽을 둘 수 있는 곳
 for i in range(19):
     for j in range(19):
         if i % 2 == 1 and j % 2 == 1:
-            board[i, j] = 0
+            board_[i, j] = 0
         else:
-            board[i, j] = 2
+            board_[i, j] = 3
 
 for i in range(19):
     for j in range(19):
         if j == 0 or j == 18 or i == 0 or i == 18:
-            board[i, j] = 3
+            board_[i, j] = 4
 
 
 # 객체 생성 예시 a = Object("d", [1, 2], (1, 2)) 2번째는 대괄호, 3번째는 소괄호여야 함.
@@ -36,9 +38,12 @@ for i in range(19):
 # 좌표는 계속 변하지만 크기는 변하지 않으므로 이렇게 설정함
 class Object:
     def __init__(self, src: str, pos: list[int], size: tuple[int, int]):
-        self.img = pygame.image.load(src)
+        self.img = pygame.image.load(src).convert()
         self.pos = pos
         self.size = size
+
+    def blit(self, pos):
+        screen.blit(self, pos)
 
 
 board = Object("판.png", [200, 0], (500, 500))
@@ -157,15 +162,35 @@ def game_vertical(turn):
                         game_white()
                 elif wall_click_event(turn, "horizon"):
                     game_horizon(turn)
+                # 벽을 설치하는 로직
                 elif board_check(pygame.mouse.get_pos()):
-                    # TODO: 보드판에 벽을 놓을때 발생할 함수를 만들어야 함.
-                    pass
+                    make_wall(pygame.mouse.get_pos(), "vertical")
+                    if turn == "black":
+                        game("white")
+                    elif turn == "white":
+                        game("black")
         display_base_objects()
         board_loading()
         screen.blit(temp_wall.img,
                     [temp_wall.pos[0] - temp_wall.size[0] // 2, temp_wall.pos[1] - temp_wall.size[1] // 2]
                     )
         pygame.display.update()
+
+
+def make_wall(pos, type):
+    for j in range(8):
+        if 246 + j * 55 <= pos[0] <= 266 + j * 55:
+            for i in range(8):
+                if 45 + i * 55 <= pos[1] <= 65 + i * 55:
+                    if type == "vertical":
+                        board_[(2 + 2 * i) - 1, (2 + 2 * j)] = 4
+                        board_[2 + 2 * i, 2 + 2 * j] = 4
+                        board_[(2 + 2 * i) + 1, (2 + 2 * j)] = 4
+                        print([2 + 2 * j, 2 + 2 * i])
+                    elif type == "horizon":
+                        board_[(2 + 2 * i), (2 + 2 * j) - 1] = 4
+                        board_[2 + 2 * i, 2 + 2 * j] = 4
+                        board_[(2 + 2 * i), (2 + 2 * j) + 1] = 4
 
 
 game("black")
