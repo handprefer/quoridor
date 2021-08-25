@@ -38,7 +38,7 @@ for i in range(19):
 # 좌표는 계속 변하지만 크기는 변하지 않으므로 이렇게 설정함
 class Object:
     def __init__(self, src: str, pos: list[int], size: tuple[int, int]):
-        self.img = pygame.image.load(src)
+        self.img = pygame.image.load(src).convert()
         self.pos = pos
         self.size = size
 
@@ -162,7 +162,8 @@ def game_vertical(turn):
                         game_white()
                 elif wall_click_event(turn, "horizon"):
                     game_horizon(turn)
-                elif True:  # board_check(pygame.mouse.get_pos()) # TODO: vertical 이면 위 아래가 3인지 확인
+                # 벽을 설치하는 로직
+                elif board_check(pygame.mouse.get_pos()):
                     make_wall(pygame.mouse.get_pos(), "vertical")
                     if turn == "black":
                         game("white")
