@@ -1,15 +1,8 @@
+#click_cell,user_checker만들기 114번째줄, 바로밑에
 import sys
 
 import numpy as np
 import pygame
-
-
-# text("글자",글자크기,컬러1,컬러2,컬러3)
-# 예시 : screen.blit(text("hi",50,255,255,255),self_pos)
-def text(text_value, text_size, c1, c2, c3):
-    font = pygame.font.SysFont('malgungothic', text_size)
-    text = font.render(text_value, True, (c1, c2, c3))
-    return text
 
 
 pygame.init()
@@ -18,6 +11,7 @@ pygame.display.set_caption("쿼리도")
 clock = pygame.time.Clock()
 
 board_array = np.zeros((19, 19))
+
 
 # 홀수, 홀수 돌을 둘 수 있는 곳이고 나머지는 벽을 둘 수 있는 곳
 for i in range(19):
@@ -31,6 +25,14 @@ for i in range(19):
     for j in range(19):
         if j == 0 or j == 18 or i == 0 or i == 18:
             board_array[i, j] = 4
+            
+            
+#text("글자",글자크기,컬러1,컬러2,컬러3)
+#예시 : screen.blit(text("hi",50,255,255,255),self_pos)
+def text(text_value,text_size,c1,c2,c3):
+    font=pygame.font.SysFont('malgungothic',text_size)
+    letter=font.render(text_value,True,(c1,c2,c3))
+    return letter
 
 
 # 객체 생성 예시 a = Object("d", [1, 2], (1, 2)) 2번째는 대괄호, 3번째는 소괄호여야 함.
@@ -44,21 +46,20 @@ class Object:
 
 
 board = Object("판.png", [200, 0], (500, 500))
-horizon_wall1 = Object("가로벽.png", [44, 110], (111, 3))
-vertical_wall1 = Object("세로벽.png", [99, 257], (3, 111))
-horizon_wall2 = Object("가로벽.png", [744, 310], (111, 3))
-vertical_wall2 = Object("세로벽.png", [799, 57], (3, 111))
+horizon_wall1 = Object("가로벽.png", [44, 100], (111, 3))
+vertical_wall1 = Object("세로벽.png", [99, 247], (3, 111))
+horizon_wall2 = Object("가로벽.png", [744, 300], (111, 3))
+vertical_wall2 = Object("세로벽.png", [799, 47], (3, 111))
 black_user = Object("흑.png", [203, 224], (55, 55))
 white_user = Object("백.png", [647, 224], (55, 55))
 
 
 def display_base_objects():
     screen.fill((255, 255, 255))
-    pygame.draw.polygon(screen, (150, 150, 150),
-                        [(30, 63), (50, 43), (150, 43), (170, 63), (170, 163), (150, 183), (50, 183), (30, 163)])
-    pygame.draw.polygon(screen, (150, 150, 150), [(50, 243), (170, 243), (170, 383), (30, 383), (30, 263)])
-    pygame.draw.polygon(screen, (150, 150, 150), [(750, 43), (870, 43), (870, 183), (730, 183), (730, 63)])
-    pygame.draw.polygon(screen, (150, 150, 150), [(750, 243), (870, 243), (870, 383), (730, 383), (730, 263)])
+    pygame.draw.polygon(screen,(150,150,150),[(30,63),(50,43),(150,43),(170,63),(170,163),(150,183),(50,183),(30,163)])
+    pygame.draw.polygon(screen,(150,150,150),[(50,243),(170,243),(170,383),(30,383),(30,263)])
+    pygame.draw.polygon(screen,(150,150,150),[(750,43),(870,43),(870,183),(730,183),(730,63)])
+    pygame.draw.polygon(screen,(150,150,150),[(750,243),(870,243),(870,383),(730,383),(730,263)])
     screen.blits(
         (
             (board.img, board.pos),
@@ -123,20 +124,26 @@ def wall_click_event(user, wall):
     return False
 
 
-click_location = [0, 0]
+click_location=[0,0]
 
 
-def click_cell(position):  # ex) click_cell(pygame.mouse.get_pos()) \n print(click_location)
-    if 0 <= (position[0] - 200) % 56 <= 53:
-        click_location[0] = ((position[0] - 200) // 56) * 2 + 1
+def click_cell(position):   #ex) click_cell(pygame.mouse.get_pos()) \n print(click_location)
+    if 0<=(position[0]-204)%56<=49:
+        click_location[0]=((position[0]-204)//56)*2+1
     else:
-        click_location[0] = ((position[0] - 200) // 56) * 2 + 2
-
-    if 0 <= (position[1]) % 56 <= 53:
-        click_location[1] = ((position[1]) // 56) * 2 + 1
+        click_location[0]=((position[0]-204)//56)*2+2
+    
+    if 0<=(position[1]-3)%56<=49:
+        click_location[1]=((position[1]-3)//56)*2+1
     else:
-        click_location[1] = ((position[1]) // 56) * 2 + 2
+        click_location[1]=((position[1]-3)//56)*2+2
+
+    
+def user_checker(turn):
+    click_cell(pygame.mouse.get_pos())
+    print(board_array[click_location[0],click_location[1]])
     print(click_location)
+    print(pygame.mouse.get_pos())
 
 
 # turn 매개변수의 타입은 Str, 값은 black, white 가질 수 있음
@@ -154,13 +161,19 @@ def game(turn):
                 click_cell(pygame.mouse.get_pos())
                 if user_click_event(turn):
                     if turn == "black":
-                        game_black(turn)
+                        #game_black()
+                        print("black")
+                        user_checker(turn)
                     elif turn == "white":
-                        game_white(turn)
+                        #game_white()
+                        print("white")
+                        user_checker(turn)
                 elif wall_click_event(turn, "vertical"):
-                    game_vertical(turn)
+                    #game_vertical()
+                    print("vertical")
                 elif wall_click_event(turn, "horizon"):
-                    game_horizon(turn)
+                    #game_horizon()
+                    print("horizon")
 
 
 # turn 매개변수의 타입은 Str, 값은 black, white 가질 수 있음
@@ -216,3 +229,4 @@ def make_wall(pos, type):
 
 
 game("black")
+
