@@ -38,7 +38,7 @@ for i in range(19):
 # 좌표는 계속 변하지만 크기는 변하지 않으므로 이렇게 설정함
 class Object:
     def __init__(self, src: str, pos: list[int], size: tuple[int, int]):
-        self.img = pygame.image.load(src).convert()
+        self.img = pygame.image.load(src).convert_alpha()
         self.pos = pos
         self.size = size
 
@@ -71,6 +71,16 @@ def display_base_objects():
 
 
 def board_loading():
+    temp_vertical = Object("세로벽.png", [0, 0], (3, 111))
+    temp_horizon = Object("가로벽.png", [0, 0], (111, 3))
+    for y in range(19):
+        for x in range(19):
+            if board_array[y, x] == 4:
+                if not (x % 2 == 0 and y % 2 == 0) and not (x == 0 or y == 0) and not (x == 18 or y == 18):
+                    if x % 2 == 0:
+                        screen.blit(temp_vertical.img, [200 + 27.8 * x, 28 * (y - 1)])
+                    elif y % 2 == 0:
+                        screen.blit(temp_horizon.img, [200 + 27.8 * x, 28 * y])
     screen.blits(
         (
             (black_user.img, black_user.pos),
@@ -176,7 +186,7 @@ def game_vertical(turn):
                 elif wall_click_event(turn, "horizon"):
                     game_horizon(turn)
                 # 벽을 설치하는 로직
-                elif board_check(pygame.mouse.get_pos()):
+                elif True:  # board_check(pygame.mouse.get_pos())
                     make_wall(pygame.mouse.get_pos(), "vertical")
                     if turn == "black":
                         game("white")
@@ -199,7 +209,6 @@ def make_wall(pos, type):
                         board_array[(2 + 2 * i) - 1, (2 + 2 * j)] = 4
                         board_array[2 + 2 * i, 2 + 2 * j] = 4
                         board_array[(2 + 2 * i) + 1, (2 + 2 * j)] = 4
-                        print([2 + 2 * j, 2 + 2 * i])
                     elif type == "horizon":
                         board_array[(2 + 2 * i), (2 + 2 * j) - 1] = 4
                         board_array[2 + 2 * i, 2 + 2 * j] = 4
