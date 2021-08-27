@@ -122,25 +122,25 @@ def wall_click_event(user, wall):
     return False
 
 
-click_location = [0, 0]
-
-
-def click_cell(position):  # ex) click_cell(pygame.mouse.get_pos()) \n print(click_location)
-    if 0 <= (position[0] - 204) % 56 <= 49:
-        click_location[0] = ((position[0] - 204) // 56) * 2 + 1
+location=[0,0]
+def click_cell(position):   #ex) print(click_cell(pygame.mouse.get_pos()))
+    i=0
+    j=0
+    if 0<=(position[0]-204)%56<=49:
+        i=((position[0]-204)//56)*2+1
     else:
-        click_location[0] = ((position[0] - 204) // 56) * 2 + 2
-
-    if 0 <= (position[1] - 3) % 56 <= 49:
-        click_location[1] = ((position[1] - 3) // 56) * 2 + 1
+        i=((position[0]-204)//56)*2+2
+    
+    if 0<=(position[1]-3)%56<=49:
+        j=((position[1]-3)//56)*2+1
     else:
-        click_location[1] = ((position[1] - 3) // 56) * 2 + 2
-
+        j=((position[1]-3)//56)*2+2
+    return (i,j)
 
 def user_checker(turn):
-    click_cell(pygame.mouse.get_pos())
-    print(board_array[click_location[0], click_location[1]])
-    print(click_location)
+    location=click_cell(pygame.mouse.get_pos())
+    print(board_array[location[0],location[1]])
+    print(location)
     print(pygame.mouse.get_pos())
 
 
