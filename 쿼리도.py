@@ -111,26 +111,48 @@ def wall_click_event(user, wall):
                 return True
     return False
 
-location=[0,0]
-def click_cell(position):   #ex) print(click_cell(pygame.mouse.get_pos()))
-    i=0
-    j=0
-    if 0<=(position[0]-204)%56<=49:
-        i=((position[0]-204)//56)*2+1
-    else:
-        i=((position[0]-204)//56)*2+2
+def click_cell(position):   #ex) location=click_cell(pygame.mouse.get_pos()))
+    wall_size=3;
     
-    if 0<=(position[1]-3)%56<=49:
-        j=((position[1]-3)//56)*2+1
+    first_x=position[0]-198-56*((position[0]-198)//56)    #0~55
+    i=0
+    if first_x//28>0:
+        mid_x=(first_x-56)*(-1)
     else:
-        j=((position[1]-3)//56)*2+2
+        mid_x=first_x
+    if mid_x<=wall_size:
+        if(first_x//28>0):
+            i=(((position[0]-198)//56)+1)*2
+        else:
+            i=((position[0]-198)//56)*2
+    else:
+        i=((position[0]-198)//56)*2+1
+    if (position[0]-198)%56==0:
+        i=((position[0]-198)//56)*2
+    
+    first_y=position[1]+2-56*((position[1]+2)//56)    #0~55
+    j=0
+    if first_y//28>0:
+        mid_y=(first_y-56)*(-1)
+    else:
+        mid_y=first_y
+    if mid_y<=wall_size:
+        if(first_y//28>0):
+            j=(((position[1]+2)//56)+1)*2
+        else:
+            j=((position[1]+2)//56)*2
+    else:
+        j=((position[1]+2)//56)*2+1
+    if (position[1]+2)%56==0:
+        j=((position[1]+2)//56)*2
+    #print(first_x, mid_x, j)
     return (i,j)
 
     
 def user_checker(turn):
-    location=click_cell(pygame.mouse.get_pos())
-    print(board_array[location[0],location[1]])
-    print(location)
+    x,y=click_cell(pygame.mouse.get_pos())
+    print(board_array[x,y])
+    print((x,y))
     print(pygame.mouse.get_pos())
 
 
