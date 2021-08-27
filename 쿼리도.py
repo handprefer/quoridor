@@ -112,7 +112,7 @@ def wall_click_event(user, wall):
     return False
 
 def click_cell(position):   #ex) location=click_cell(pygame.mouse.get_pos()))
-    wall_size=3;
+    wall_size=2;
     
     first_x=position[0]-198-56*((position[0]-198)//56)    #0~55
     i=0
