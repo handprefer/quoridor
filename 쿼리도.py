@@ -148,7 +148,7 @@ def click_cell(position):   #ex) location=click_cell(pygame.mouse.get_pos()))
     #print(first_x, mid_x, j)
     return (i,j)
 
-def user_cell(turn):   #ex) location=click_cell(pygame.mouse.get_pos()))
+def user_cell(turn):   #ex) turn색깔 돌의 좌표 리턴
     if turn=="black":
         position=black_user.pos
     else:
