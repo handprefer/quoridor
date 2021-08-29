@@ -112,7 +112,7 @@ def wall_click_event(user, wall):
     return False
 
 def click_cell(position):   #ex) location=click_cell(pygame.mouse.get_pos()))
-    wall_size=2;
+    wall_size=3;
     
     first_x=position[0]-198-56*((position[0]-198)//56)    #0~55
     i=0
@@ -145,10 +145,9 @@ def click_cell(position):   #ex) location=click_cell(pygame.mouse.get_pos()))
         j=((position[1]+2)//56)*2+1
     if (position[1]+2)%56==0:
         j=((position[1]+2)//56)*2
-    #print(first_x, mid_x, j)
     return (i,j)
 
-def user_cell(turn):   #ex) turn색깔 돌의 좌표 리턴
+def user_cell(turn):   #ex) location=click_cell(pygame.mouse.get_pos()))
     if turn=="black":
         position=black_user.pos
     else:
@@ -162,7 +161,7 @@ def user_cell(turn):   #ex) turn색깔 돌의 좌표 리턴
     else:
         mid_x=first_x
     if mid_x<=wall_size:
-        if(first_x//28>0):
+        if first_x//28>0:
             i=(((position[0]-198)//56)+1)*2
         else:
             i=((position[0]-198)//56)*2
@@ -178,7 +177,7 @@ def user_cell(turn):   #ex) turn색깔 돌의 좌표 리턴
     else:
         mid_y=first_y
     if mid_y<=wall_size:
-        if(first_y//28>0):
+        if first_y//28>0:
             j=(((position[1]+2)//56)+1)*2
         else:
             j=((position[1]+2)//56)*2
@@ -188,11 +187,54 @@ def user_cell(turn):   #ex) turn색깔 돌의 좌표 리턴
         j=((position[1]+2)//56)*2
     return (i,j)
 
-def user_checker(turn):
-    x,y=click_cell(pygame.mouse.get_pos())
-    print(board_array[x,y])
-    print((x,y))
-    print(pygame.mouse.get_pos())
+def user_checker(turn): #클릭한곳에 돌 이동 가능여부 판단
+    location=click_cell(pygame.mouse.get_pos())
+    x=user_cell(turn)[0]
+    y=user_cell(turn)[1]
+    click_x=location[0]
+    click_y=location[1]
+    if click_x==x and click_y==y-4: #뛰어넘기 위쪽
+        if board_array[x][y-1]==3 and board_array[x][y-2]!=0 and board_array[x][y-3]==3:
+            return True
+    elif click_x==x and click_y==y+4: #뛰어넘기 아래쪽
+        if board_array[x][y+1]==3 and board_array[x][y+2]!=0 and board_array[x][y+3]==3:
+            return True
+    elif click_x==x-4 and click_y==y: #뛰어넘기 오른쪽
+        if board_array[x-1][y]==3 and board_array[x-2][y]!=0 and board_array[x-3][y]==3:
+            return True
+    elif click_x==x+4 and click_y==y: #뛰어넘기 오른쪽
+        if board_array[x+1][y]==3 and board_array[x+2][y]!=0 and board_array[x+3][y]==3:
+            return True
+    elif click_x==x+2 and click_y==y-2: #오른쪽 위
+        if (board_array[x+1][y]==3 and board_array[x+2][y]!=0 and board_array[x+3][y]==4 and board_array[x+2][y-1]==3) or \
+                (board_array[x][y-1]==3 and board_array[x][y-2]!=0 and board_array[x][y-3]==4 and board_array[x+1][y-2]==3):
+            return True
+    elif click_x==x-2 and click_y==y-2: #왼쪽 위
+        if (board_array[x-1][y]==3 and board_array[x-2][y]!=0 and board_array[x-3][y]==4 and board_array[x-2][y-1]==3) or \
+                (board_array[x][y-1]==3 and board_array[x][y-2]!=0 and board_array[x][y-3]==4 and board_array[x-1][y-2]==3):
+            return True
+    elif click_x==x+2 and click_y==y+2: #오른쪽 아래
+        if (board_array[x+1][y]==3 and board_array[x+2][y]!=0 and board_array[x+3][y]==4 and board_array[x+2][y+1]==3) or \
+                (board_array[x][y+1]==3 and board_array[x][y+2]!=0 and board_array[x][y+3]==4 and board_array[x+1][y+2]==3):
+            return True
+    elif click_x==x-2 and click_y==y+2: #왼쪽 아래
+        if (board_array[x-1][y]==3 and board_array[x-2][y]!=0 and board_array[x-3][y]==4 and board_array[x-2][y+1]==3) or \
+                (board_array[x][y+1]==3 and board_array[x][y+2]!=0 and board_array[x][y+3]==4 and board_array[x-1][y+2]==3):
+            return True
+    elif click_x==x and click_y==y-2: #위쪽
+        if board_array[x][y-1]==3:
+            return True
+    elif click_x==x and click_y==y+2: #아래쪽
+        if board_array[x][y+1]==3:
+            return True
+    elif click_x==x-2 and click_y==y: #위쪽
+        if board_array[x-1][y]==3:
+            return True
+    elif click_x==x+2 and click_y==y: #아래쪽
+        if board_array[x+1][y]==3:
+            return True
+    
+    return False
 
 
 run = True
