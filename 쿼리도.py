@@ -154,7 +154,7 @@ def user_cell(turn):  # turn색깔 돌의 위치를 return
         j = ((position[1] + 2) // 56) * 2 + 1
     if (position[1] + 2) % 56 == 0:
         j = ((position[1] + 2) // 56) * 2
-    return j, i
+    return int(j), int(i)
 
 
 def user_checker(turn):  # 클릭한곳에 돌 이동 가능여부 판단
@@ -507,7 +507,7 @@ def game_black(turn):
                 elif wall_click_event(turn, "vertical"):
                     game_vertical(turn)
                 # User Check
-                elif user_checker("black"):
+                elif True:
                     board_array = return_board_that_set_user_array(board_array, event.pos, "black")
                     game("white")
         display_base_objects()
@@ -541,7 +541,7 @@ def game_white(turn):
                 elif wall_click_event(turn, "vertical"):
                     game_vertical(turn)
                 # 벽을 설치하는 로직
-                elif user_checker(turn):
+                elif True:
                     board_array = return_board_that_set_user_array(board_array, event.pos, turn)
                     game("black")
         display_base_objects()
