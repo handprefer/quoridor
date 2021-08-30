@@ -194,44 +194,44 @@ def user_checker(turn): #클릭한곳에 돌 이동 가능여부 판단
     click_x=location[0]
     click_y=location[1]
     if click_x==x and click_y==y-4: #뛰어넘기 위쪽
-        if board_array[x][y-1]==3 and board_array[x][y-2]!=0 and board_array[x][y-3]==3:
+        if board_array[x,y-1]==3 and board_array[x,y-2]!=0 and board_array[x,y-3]==3:
             return True
     elif click_x==x and click_y==y+4: #뛰어넘기 아래쪽
-        if board_array[x][y+1]==3 and board_array[x][y+2]!=0 and board_array[x][y+3]==3:
+        if board_array[x,y+1]==3 and board_array[x,y+2]!=0 and board_array[x,y+3]==3:
             return True
     elif click_x==x-4 and click_y==y: #뛰어넘기 오른쪽
-        if board_array[x-1][y]==3 and board_array[x-2][y]!=0 and board_array[x-3][y]==3:
+        if board_array[x-1,y]==3 and board_array[x-2,y]!=0 and board_array[x-3,y]==3:
             return True
     elif click_x==x+4 and click_y==y: #뛰어넘기 오른쪽
-        if board_array[x+1][y]==3 and board_array[x+2][y]!=0 and board_array[x+3][y]==3:
+        if board_array[x+1,y]==3 and board_array[x+2,y]!=0 and board_array[x+3,y]==3:
             return True
     elif click_x==x+2 and click_y==y-2: #오른쪽 위
-        if (board_array[x+1][y]==3 and board_array[x+2][y]!=0 and board_array[x+3][y]==4 and board_array[x+2][y-1]==3) or \
-                (board_array[x][y-1]==3 and board_array[x][y-2]!=0 and board_array[x][y-3]==4 and board_array[x+1][y-2]==3):
+        if (board_array[x+1,y]==3 and board_array[x+2,y]!=0 and board_array[x+3,y]==4 and board_array[x+2,y-1]==3) or \
+                (board_array[x,y-1]==3 and board_array[x,y-2]!=0 and board_array[x,y-3]==4 and board_array[x+1,y-2]==3):
             return True
     elif click_x==x-2 and click_y==y-2: #왼쪽 위
-        if (board_array[x-1][y]==3 and board_array[x-2][y]!=0 and board_array[x-3][y]==4 and board_array[x-2][y-1]==3) or \
-                (board_array[x][y-1]==3 and board_array[x][y-2]!=0 and board_array[x][y-3]==4 and board_array[x-1][y-2]==3):
+        if (board_array[x-1,y]==3 and board_array[x-2,y]!=0 and board_array[x-3,y]==4 and board_array[x-2,y-1]==3) or \
+                (board_array[x,y-1]==3 and board_array[x,y-2]!=0 and board_array[x,y-3]==4 and board_array[x-1,y-2]==3):
             return True
     elif click_x==x+2 and click_y==y+2: #오른쪽 아래
-        if (board_array[x+1][y]==3 and board_array[x+2][y]!=0 and board_array[x+3][y]==4 and board_array[x+2][y+1]==3) or \
-                (board_array[x][y+1]==3 and board_array[x][y+2]!=0 and board_array[x][y+3]==4 and board_array[x+1][y+2]==3):
+        if (board_array[x+1,y]==3 and board_array[x+2,y]!=0 and board_array[x+3,y]==4 and board_array[x+2,y+1]==3) or \
+                (board_array[x,y+1]==3 and board_array[x,y+2]!=0 and board_array[x,y+3]==4 and board_array[x+1,y+2]==3):
             return True
     elif click_x==x-2 and click_y==y+2: #왼쪽 아래
-        if (board_array[x-1][y]==3 and board_array[x-2][y]!=0 and board_array[x-3][y]==4 and board_array[x-2][y+1]==3) or \
-                (board_array[x][y+1]==3 and board_array[x][y+2]!=0 and board_array[x][y+3]==4 and board_array[x-1][y+2]==3):
+        if (board_array[x-1,y]==3 and board_array[x-2,y]!=0 and board_array[x-3,y]==4 and board_array[x-2,y+1]==3) or \
+                (board_array[x,y+1]==3 and board_array[x,y+2]!=0 and board_array[x,y+3]==4 and board_array[x-1,y+2]==3):
             return True
     elif click_x==x and click_y==y-2: #위쪽
-        if board_array[x][y-1]==3:
+        if board_array[x,y-1]==3:
             return True
     elif click_x==x and click_y==y+2: #아래쪽
-        if board_array[x][y+1]==3:
+        if board_array[x,y+1]==3:
             return True
     elif click_x==x-2 and click_y==y: #위쪽
-        if board_array[x-1][y]==3:
+        if board_array[x-1,y]==3:
             return True
     elif click_x==x+2 and click_y==y: #아래쪽
-        if board_array[x+1][y]==3:
+        if board_array[x+1,y]==3:
             return True
     
     return False
