@@ -154,13 +154,13 @@ def user_cell(turn):  # turn색깔 돌의 위치를 return
         j = ((position[1] + 2) // 56) * 2 + 1
     if (position[1] + 2) % 56 == 0:
         j = ((position[1] + 2) // 56) * 2
-    return (i, j)
+    return j, i
 
 
-def user_checker(turn, pos):  # 클릭한곳에 돌 이동 가능여부 판단
-    location = click_cell(pos)
-    x = user_cell(turn)[0]
-    y = user_cell(turn)[1]
+def user_checker(turn):  # 클릭한곳에 돌 이동 가능여부 판단
+    location = click_cell(pygame.mouse.get_pos())
+    x = user_cell(turn)[1]
+    y = user_cell(turn)[0]
     click_x = location[0]
     click_y = location[1]
     if click_x == x - 4 and click_y == y:  # 뛰어넘기 왼쪽
@@ -216,16 +216,16 @@ def user_checker(turn, pos):  # 클릭한곳에 돌 이동 가능여부 판단
 
 
 def click_cell(position):
-    wall_size = 3;
+    wall_size = 3
 
-    first_x = position[0] - 198 - 56 * ((position[0] - 198) // 56)  # 0~55
+    first_x = position[0] - 198 - 56 * ((position[0] - 198) // 56)
     i = 0
     if first_x // 28 > 0:
         mid_x = (first_x - 56) * (-1)
     else:
         mid_x = first_x
     if mid_x <= wall_size:
-        if (first_x // 28 > 0):
+        if first_x // 28 > 0:
             i = (((position[0] - 198) // 56) + 1) * 2
         else:
             i = ((position[0] - 198) // 56) * 2
@@ -233,7 +233,6 @@ def click_cell(position):
         i = ((position[0] - 198) // 56) * 2 + 1
     if (position[0] - 198) % 56 == 0:
         i = ((position[0] - 198) // 56) * 2
-
     first_y = position[1] + 2 - 56 * ((position[1] + 2) // 56)  # 0~55
     j = 0
     if first_y // 28 > 0:
@@ -241,7 +240,7 @@ def click_cell(position):
     else:
         mid_y = first_y
     if mid_y <= wall_size:
-        if (first_y // 28 > 0):
+        if first_y // 28 > 0:
             j = (((position[1] + 2) // 56) + 1) * 2
         else:
             j = ((position[1] + 2) // 56) * 2
@@ -249,7 +248,7 @@ def click_cell(position):
         j = ((position[1] + 2) // 56) * 2 + 1
     if (position[1] + 2) % 56 == 0:
         j = ((position[1] + 2) // 56) * 2
-    return (i, j)
+    return j, i
 
 
 def user_pos(type):
@@ -378,6 +377,7 @@ def game(turn):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                print(click_cell(event.pos))
                 if user_click_event(turn):
                     if turn == "black":
                         game_black(turn)
@@ -419,12 +419,12 @@ def game_vertical(turn):
                         make_graph(board_array, event.pos, "vertical"),
                         user_cell("black"),
                         17
-                ) == True and \
+                ) is True and \
                         wall_checker(
                             make_graph(board_array, event.pos, "vertical"),
                             user_cell("white"),
                             1
-                        ) == True:
+                        ) is True:
                     board_array = return_board_that_add_wall(board_array, pygame.mouse.get_pos(), "vertical")
                     if turn == "black":
                         game("white")
@@ -465,12 +465,12 @@ def game_horizon(turn):
                         make_graph(board_array, event.pos, "horizon"),
                         user_cell("black"),
                         17
-                ) == True and \
+                ) is True and \
                         wall_checker(
                             make_graph(board_array, event.pos, "horizon"),
                             user_cell("white"),
                             1
-                        ) == True:
+                        ) is True:
                     board_array = return_board_that_add_wall(board_array, pygame.mouse.get_pos(), "horizon")
                     if turn == "black":
                         game("white")
@@ -507,7 +507,7 @@ def game_black(turn):
                 elif wall_click_event(turn, "vertical"):
                     game_vertical(turn)
                 # User Check
-                elif user_checker("black", event.pos):
+                elif user_checker("black"):
                     board_array = return_board_that_set_user_array(board_array, event.pos, "black")
                     game("white")
         display_base_objects()
@@ -560,17 +560,17 @@ def return_board_that_add_wall(temp_board, pos_that_make_wall, type):
     array = click_cell(pos_that_make_wall)
     if array[0] % 2 == 0 and array[1] % 2 == 0:
         if type == "vertical":
-            result_board[array[1], array[0]] = 4
-            result_board[array[1] + 1, array[0]] = 4
-            result_board[array[1] - 1, array[0]] = 4
-            result_board[array[1] + 2, array[0]] = 4
-            result_board[array[1] - 2, array[0]] = 4
+            result_board[array[0], array[1]] = 4
+            result_board[array[0] + 1, array[1]] = 4
+            result_board[array[0] - 1, array[1]] = 4
+            result_board[array[0] + 2, array[1]] = 4
+            result_board[array[0] - 2, array[1]] = 4
         elif type == "horizon":
-            result_board[array[1], array[0]] = 4
-            result_board[array[1], array[0] + 1] = 4
-            result_board[array[1], array[0] - 1] = 4
-            result_board[array[1], array[0] + 2] = 4
-            result_board[array[1], array[0] - 2] = 4
+            result_board[array[0], array[1]] = 4
+            result_board[array[0], array[1] + 1] = 4
+            result_board[array[0], array[1] - 1] = 4
+            result_board[array[0], array[1] + 2] = 4
+            result_board[array[0], array[1] - 2] = 4
         return result_board
 
 
