@@ -41,12 +41,10 @@ class Object:
 
 def display_base_objects():
     screen.fill((255, 255, 255))
-    pygame.draw.polygon(screen, (150, 150, 150),
-                        [(30, 63), (50, 43), (150, 43), (170, 63), (170, 163), (150, 183), (50, 183), (30, 163)])
-    pygame.draw.polygon(screen, (150, 150, 150), [(50, 243), (170, 243), (170, 383), (30, 383), (30, 263)])
-    pygame.draw.polygon(screen, (150, 150, 150), [(750, 43), (870, 43), (870, 183), (730, 183), (730, 63)])
-    pygame.draw.polygon(screen, (150, 150, 150), [(750, 243), (870, 243), (870, 383), (730, 383), (730, 263)])
-
+    pygame.draw.rect(screen, (0, 0, 0), [33, 40, 130, 130])
+    pygame.draw.rect(screen, (0, 0, 0), [33, 180, 130, 130])
+    pygame.draw.rect(screen, (0, 0, 0), [733, 40, 130, 130])
+    pygame.draw.rect(screen, (0, 0, 0), [733, 180, 130, 130])
     screen.blits(
         (
             (board.img, board.pos),
@@ -94,24 +92,20 @@ def user_click_event(user):
     return False
 
 
-def wall_click_event(user, wall):
+def wall_click_event(user, wall, pos):
     if user == "black":
-        if wall == "vertical":
-            if vertical_wall1.pos[0] <= pygame.mouse.get_pos()[0] <= vertical_wall1.pos[0] + 140 and \
-                    vertical_wall1.pos[1] <= pygame.mouse.get_pos()[1] <= vertical_wall1.pos[1] + 140:
+        if wall == "horizon":
+            if 33 <= pos[0] <= 167 and 40 <= pos[1] <= 170:
                 return True
-        elif wall == "horizon":
-            if horizon_wall1.pos[0] <= pygame.mouse.get_pos()[0] <= horizon_wall1.pos[0] + 140 and \
-                    horizon_wall1.pos[1] <= pygame.mouse.get_pos()[1] <= horizon_wall1.pos[1] + 140:
+        elif wall == "vertical":
+            if 33 <= pos[0] <= 167 and 180 <= pos[1] <= 310:
                 return True
     elif user == "white":
         if wall == "vertical":
-            if vertical_wall2.pos[0] <= pygame.mouse.get_pos()[0] <= vertical_wall2.pos[0] + 140 and \
-                    vertical_wall2.pos[1] <= pygame.mouse.get_pos()[1] <= vertical_wall2.pos[1] + 140:
+            if 733 <= pos[0] <= 863 and 180 <= pos[1] <= 310:
                 return True
         if wall == "horizon":
-            if horizon_wall2.pos[0] <= pygame.mouse.get_pos()[0] <= horizon_wall2.pos[0] + 140 and \
-                    horizon_wall2.pos[1] <= pygame.mouse.get_pos()[1] <= horizon_wall2.pos[1] + 140:
+            if 733 <= pos[0] <= 863 and 40 <= pos[1] <= 170:
                 return True
     return False
 
@@ -163,6 +157,7 @@ def user_checker(turn):  # 클릭한곳에 돌 이동 가능여부 판단
     y = user_cell(turn)[1]
     click_x = location[0]
     click_y = location[1]
+
     if click_x == x  and click_y == y-4:  # 뛰어넘기 왼쪽
         if board_array[x, y - 1] == 3 and board_array[x, y - 2] != 0 and board_array[x, y - 3] == 3:
             return True
@@ -183,6 +178,7 @@ def user_checker(turn):  # 클릭한곳에 돌 이동 가능여부 판단
                  board_array[x + 1, y - 2] == 3):
             return True
     elif click_x == x - 2 and click_y == y - 2:  # 오른쪽 아래
+
         if (board_array[x - 1, y] == 3 and board_array[x - 2, y] != 0 and board_array[x - 3, y] == 4 and board_array[
             x - 2, y - 1] == 3) or \
                 (board_array[x, y - 1] == 3 and board_array[x, y - 2] != 0 and board_array[x, y - 3] == 4 and
@@ -261,8 +257,8 @@ def user_pos(type):
             elif board_array[i, j] == 2 and type == "white":
                 x = i
                 y = j
-    return 202 + (y - 1) * 27.9, (x-1) * 28
-
+    return 202 + (y - 1) * 27.9, (x - 1) * 28
+  
 
 # 게임룰에 맞는 행동인지 체크하는 함수#####################################################################
 
@@ -382,9 +378,9 @@ def game(turn):
                         game_black(turn)
                     elif turn == "white":
                         game_white(turn)
-                elif wall_click_event(turn, "vertical"):
+                elif wall_click_event(turn, "vertical", event.pos):
                     game_vertical(turn)
-                elif wall_click_event(turn, "horizon"):
+                elif wall_click_event(turn, "horizon", event.pos):
                     game_horizon(turn)
 
 
@@ -410,24 +406,25 @@ def game_vertical(turn):
                     elif turn == "white":
                         game_white(turn)
                 # 벽을 클릭한 경우
-                elif wall_click_event(turn, "horizon"):
+                elif wall_click_event(turn, "horizon", event.pos):
                     game_horizon(turn)
                 # 벽을 설치하는 로직
-                elif wall_checker(
-                        make_graph(board_array, event.pos, "vertical"),
-                        user_cell("black"),
-                        17
-                ) is True and \
-                        wall_checker(
+                elif 200 <= event.pos[0] <= 700:
+                    if wall_checker(
                             make_graph(board_array, event.pos, "vertical"),
-                            user_cell("white"),
-                            1
-                        ) is True:
-                    board_array = return_board_that_add_wall(board_array, pygame.mouse.get_pos(), "vertical")
-                    if turn == "black":
-                        game("white")
-                    elif turn == "white":
-                        game("black")
+                            user_cell("black"),
+                            17
+                    ) is True and \
+                            wall_checker(
+                                make_graph(board_array, event.pos, "vertical"),
+                                user_cell("white"),
+                                1
+                            ) is True:
+                        board_array = return_board_that_add_wall(board_array, pygame.mouse.get_pos(), "vertical")
+                        if turn == "black":
+                            game("white")
+                        elif turn == "white":
+                            game("black")
         display_base_objects()
         board_loading()
         screen.blit(temp_wall.img,
@@ -456,24 +453,24 @@ def game_horizon(turn):
                         game_black(turn)
                     elif turn == "white":
                         game_white(turn)
-                elif wall_click_event(turn, "vertical"):
+                elif wall_click_event(turn, "vertical", event.pos):
                     game_vertical(turn)
                 # 벽을 설치하는 로직
-                elif wall_checker(
-                        make_graph(board_array, event.pos, "horizon"),
-                        user_cell("black"),
-                        17
-                ) is True and \
-                        wall_checker(
+                elif 200 <= event.pos[0] <= 700:
+                    print(event.pos)
+                    if wall_checker(
                             make_graph(board_array, event.pos, "horizon"),
-                            user_cell("white"),
-                            1
-                        ) is True:
-                    board_array = return_board_that_add_wall(board_array, pygame.mouse.get_pos(), "horizon")
-                    if turn == "black":
-                        game("white")
-                    elif turn == "white":
-                        game("black")
+                            user_cell("black"),
+                            17) is True and \
+                            wall_checker(
+                                make_graph(board_array, event.pos, "horizon"),
+                                user_cell("white"),
+                                1) is True:
+                        board_array = return_board_that_add_wall(board_array, event.pos, "horizon")
+                        if turn == "black":
+                            game("white")
+                        elif turn == "white":
+                            game("black")
         display_base_objects()
         board_loading()
         screen.blit(temp_wall.img,
@@ -500,12 +497,12 @@ def game_black(turn):
                 if user_click_event(turn):
                     if turn == "white":
                         game_white(turn)
-                elif wall_click_event(turn, "horizon"):
+                elif wall_click_event(turn, "horizon", event.pos):
                     game_horizon(turn)
-                elif wall_click_event(turn, "vertical"):
+                elif wall_click_event(turn, "vertical", event.pos):
                     game_vertical(turn)
                 # User Check
-                elif user_checker("black"):
+                elif user_checker(turn):
                     board_array = return_board_that_set_user_array(board_array, event.pos, "black")
                     game("white")
         display_base_objects()
@@ -534,9 +531,9 @@ def game_white(turn):
                 if user_click_event(turn):
                     if turn == "white":
                         game_white(turn)
-                elif wall_click_event(turn, "horizon"):
+                elif wall_click_event(turn, "horizon", event.pos):
                     game_horizon(turn)
-                elif wall_click_event(turn, "vertical"):
+                elif wall_click_event(turn, "vertical", event.pos):
                     game_vertical(turn)
                 # 벽을 설치하는 로직
                 elif user_checker("white"):
@@ -584,6 +581,31 @@ def return_board_that_set_user_array(temp_board, pos_that_user_go, user):
     return result_board
 
 
+def start():
+    screen.fill((255, 255, 255))
+    title_text = text("QUORIDOR", 70, 0, 0, 0)
+    start_text = text("Start", 40, 0, 0, 0)
+
+    screen.blit(title_text, (275, 140))
+    screen.blit(start_text, (412, 240))
+
+    pygame.display.update()
+    while True:
+        clock.tick(3)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                pos = pygame.mouse.get_pos()
+                if 413 <= pos[0] <= 497 and 254 <= pos[1] <= 287:
+                    game("black")
+        screen.fill((255, 255, 255))
+        screen.blit(title_text, (275, 140))
+        screen.blit(start_text, (412, 240))
+        pygame.display.update()
+
+
 ######################################################################
 
 
@@ -597,9 +619,9 @@ board_init()
 
 board = Object("판.png", [200, 0], (500, 500))
 horizon_wall1 = Object("가로벽big.png", [44, 100], (108, 4))
-vertical_wall1 = Object("세로벽big.png", [99, 247], (4, 108))
-horizon_wall2 = Object("가로벽big.png", [744, 300], (108, 4))
-vertical_wall2 = Object("세로벽big.png", [799, 47], (4, 108))
+vertical_wall1 = Object("세로벽big.png", [97, 190], (4, 108))
+horizon_wall2 = Object("가로벽big.png", [744, 100], (108, 4))
+vertical_wall2 = Object("세로벽big.png", [797, 190], (4, 108))
 black_user = Object("흑.png", [203, 224], (55, 55))
 white_user = Object("백.png", [647, 224], (55, 55))
 
