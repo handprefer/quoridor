@@ -115,10 +115,10 @@ def wall_click_event(user, wall):
                 return True
     return False
 
-  
-def user_cell(turn):   #turn색깔 돌의 위치를 return
-    if turn=="black":
-        position=black_user.pos
+
+def user_cell(turn):  # turn색깔 돌의 위치를 return
+    if turn == "black":
+        position = black_user.pos
     else:
         position = white_user.pos
     wall_size = 0
@@ -151,68 +151,77 @@ def user_cell(turn):   #turn색깔 돌의 위치를 return
         else:
             j = ((position[1] + 2) // 56) * 2
     else:
-        j=((position[1]+2)//56)*2+1
-    if (position[1]+2)%56==0:
-        j=((position[1]+2)//56)*2
-    return (i,j)
+        j = ((position[1] + 2) // 56) * 2 + 1
+    if (position[1] + 2) % 56 == 0:
+        j = ((position[1] + 2) // 56) * 2
+    return (i, j)
 
-def user_checker(turn): #클릭한곳에 돌 이동 가능여부 판단
-    location=click_cell(pygame.mouse.get_pos())
-    x=user_cell(turn)[0]
-    y=user_cell(turn)[1]
-    click_x=location[0]
-    click_y=location[1]
-    if click_x==x-4 and click_y==y: #뛰어넘기 왼쪽
-        if board_array[x,y-1]==3 and board_array[x,y-2]!=0 and board_array[x,y-3]==3:
+
+def user_checker(turn, pos):  # 클릭한곳에 돌 이동 가능여부 판단
+    location = click_cell(pos)
+    x = user_cell(turn)[0]
+    y = user_cell(turn)[1]
+    click_x = location[0]
+    click_y = location[1]
+    if click_x == x - 4 and click_y == y:  # 뛰어넘기 왼쪽
+        if board_array[x, y - 1] == 3 and board_array[x, y - 2] != 0 and board_array[x, y - 3] == 3:
             return True
-    elif click_x==x+4 and click_y==y: #뛰어넘기 오른쪽
-        if board_array[x,y+1]==3 and board_array[x,y+2]!=0 and board_array[x,y+3]==3:
+    elif click_x == x + 4 and click_y == y:  # 뛰어넘기 오른쪽
+        if board_array[x, y + 1] == 3 and board_array[x, y + 2] != 0 and board_array[x, y + 3] == 3:
             return True
-    elif click_x==x and click_y==y-4: #뛰어넘기 위쪽
-        if board_array[x-1,y]==3 and board_array[x-2,y]!=0 and board_array[x-3,y]==3:
+    elif click_x == x and click_y == y - 4:  # 뛰어넘기 위쪽
+        if board_array[x - 1, y] == 3 and board_array[x - 2, y] != 0 and board_array[x - 3, y] == 3:
             return True
-    elif click_x==x and click_y==y+4: #뛰어넘기 아래쪽
-        if board_array[x+1,y]==3 and board_array[x+2,y]!=0 and board_array[x+3,y]==3:
+    elif click_x == x and click_y == y + 4:  # 뛰어넘기 아래쪽
+        if board_array[x + 1, y] == 3 and board_array[x + 2, y] != 0 and board_array[x + 3, y] == 3:
             return True
-    elif click_x==x-2 and click_y==y+2: #왼쪽 아래
-        if (board_array[x+1,y]==3 and board_array[x+2,y]!=0 and board_array[x+3,y]==4 and board_array[x+2,y-1]==3) or \
-                (board_array[x,y-1]==3 and board_array[x,y-2]!=0 and board_array[x,y-3]==4 and board_array[x+1,y-2]==3):
+    elif click_x == x - 2 and click_y == y + 2:  # 왼쪽 아래
+        if (board_array[x + 1, y] == 3 and board_array[x + 2, y] != 0 and board_array[x + 3, y] == 4 and board_array[
+            x + 2, y - 1] == 3) or \
+                (board_array[x, y - 1] == 3 and board_array[x, y - 2] != 0 and board_array[x, y - 3] == 4 and
+                 board_array[x + 1, y - 2] == 3):
             return True
-    elif click_x==x+2 and click_y==y+2: #오른쪽 아래
-        if (board_array[x-1,y]==3 and board_array[x-2,y]!=0 and board_array[x-3,y]==4 and board_array[x-2,y-1]==3) or \
-                (board_array[x,y-1]==3 and board_array[x,y-2]!=0 and board_array[x,y-3]==4 and board_array[x-1,y-2]==3):
+    elif click_x == x + 2 and click_y == y + 2:  # 오른쪽 아래
+        if (board_array[x - 1, y] == 3 and board_array[x - 2, y] != 0 and board_array[x - 3, y] == 4 and board_array[
+            x - 2, y - 1] == 3) or \
+                (board_array[x, y - 1] == 3 and board_array[x, y - 2] != 0 and board_array[x, y - 3] == 4 and
+                 board_array[x - 1, y - 2] == 3):
             return True
-    elif click_x==x-2 and click_y==y-2: #왼쪽 위
-        if (board_array[x+1,y]==3 and board_array[x+2,y]!=0 and board_array[x+3,y]==4 and board_array[x+2,y+1]==3) or \
-                (board_array[x,y+1]==3 and board_array[x,y+2]!=0 and board_array[x,y+3]==4 and board_array[x+1,y+2]==3):
+    elif click_x == x - 2 and click_y == y - 2:  # 왼쪽 위
+        if (board_array[x + 1, y] == 3 and board_array[x + 2, y] != 0 and board_array[x + 3, y] == 4 and board_array[
+            x + 2, y + 1] == 3) or \
+                (board_array[x, y + 1] == 3 and board_array[x, y + 2] != 0 and board_array[x, y + 3] == 4 and
+                 board_array[x + 1, y + 2] == 3):
             return True
-    elif click_x==x+2 and click_y==y-2: #오른쪽 위
-        if (board_array[x-1,y]==3 and board_array[x-2,y]!=0 and board_array[x-3,y]==4 and board_array[x-2,y+1]==3) or \
-                (board_array[x,y+1]==3 and board_array[x,y+2]!=0 and board_array[x,y+3]==4 and board_array[x-1,y+2]==3):
+    elif click_x == x + 2 and click_y == y - 2:  # 오른쪽 위
+        if (board_array[x - 1, y] == 3 and board_array[x - 2, y] != 0 and board_array[x - 3, y] == 4 and board_array[
+            x - 2, y + 1] == 3) or \
+                (board_array[x, y + 1] == 3 and board_array[x, y + 2] != 0 and board_array[x, y + 3] == 4 and
+                 board_array[x - 1, y + 2] == 3):
             return True
-    elif click_x==x-2 and click_y==y: #왼쪽
-        if board_array[x,y-1]==3:
+    elif click_x == x - 2 and click_y == y:  # 왼쪽
+        if board_array[x, y - 1] == 3:
             return True
-    elif click_x==x+2 and click_y==y: #오른쪽
-        if board_array[x,y+1]==3:
+    elif click_x == x + 2 and click_y == y:  # 오른쪽
+        if board_array[x, y + 1] == 3:
             return True
-    elif click_x==x and click_y==y-2: #위쪽
-        if board_array[x-1,y]==3:
+    elif click_x == x and click_y == y - 2:  # 위쪽
+        if board_array[x - 1, y] == 3:
             return True
-    elif click_x==x and click_y==y+2: #아래쪽
-        if board_array[x+1,y]==3:
+    elif click_x == x and click_y == y + 2:  # 아래쪽
+        if board_array[x + 1, y] == 3:
             return True
-    
+
     return False
 
 
-def click_cell(position):  #클릭한 곳의 좌표를 return. ex)location=click_cell(pygame.mouse.get_pos()))
-    wall_size=3;
-    
-    first_x=position[0]-198-56*((position[0]-198)//56)    #0~55
-    i=0
-    if first_x//28>0:
-        mid_x=(first_x-56)*(-1)
+def click_cell(position):
+    wall_size = 3;
+
+    first_x = position[0] - 198 - 56 * ((position[0] - 198) // 56)  # 0~55
+    i = 0
+    if first_x // 28 > 0:
+        mid_x = (first_x - 56) * (-1)
     else:
         mid_x = first_x
     if mid_x <= wall_size:
@@ -241,7 +250,8 @@ def click_cell(position):  #클릭한 곳의 좌표를 return. ex)location=click
     if (position[1] + 2) % 56 == 0:
         j = ((position[1] + 2) // 56) * 2
     return (i, j)
-  
+
+
 def user_pos(type):
     global board_array
     for i in range(19):
@@ -252,70 +262,10 @@ def user_pos(type):
             elif board_array[i, j] == 2 and type == "white":
                 x = i
                 y = j
-    print(x, y)
     return 202 + (y - 1) * 27.8, x * 25
 
 
 # 게임룰에 맞는 행동인지 체크하는 함수#####################################################################
-
-
-def user_checker(turn):
-    location = click_cell(pygame.mouse.get_pos())
-    x = user_cell(turn)[0]
-    y = user_cell(turn)[1]
-    click_x = location[0]
-    click_y = location[1]
-    if click_x == x and click_y == y - 4:  # 뛰어넘기 위쪽
-        if board_array[x][y - 1] == 3 and board_array[x][y - 2] != 0 and board_array[x][y - 3] == 3:
-            return True
-    elif click_x == x and click_y == y + 4:  # 뛰어넘기 아래쪽
-        if board_array[x][y + 1] == 3 and board_array[x][y + 2] != 0 and board_array[x][y + 3] == 3:
-            return True
-    elif click_x == x - 4 and click_y == y:  # 뛰어넘기 오른쪽
-        if board_array[x - 1][y] == 3 and board_array[x - 2][y] != 0 and board_array[x - 3][y] == 3:
-            return True
-    elif click_x == x + 4 and click_y == y:  # 뛰어넘기 오른쪽
-        if board_array[x + 1][y] == 3 and board_array[x + 2][y] != 0 and board_array[x + 3][y] == 3:
-            return True
-    elif click_x == x + 2 and click_y == y - 2:  # 오른쪽 위
-        if (board_array[x + 1][y] == 3 and board_array[x + 2][y] != 0 and board_array[x + 3][y] == 4 and
-            board_array[x + 2][y - 1] == 3) or \
-                (board_array[x][y - 1] == 3 and board_array[x][y - 2] != 0 and board_array[x][y - 3] == 4 and
-                 board_array[x + 1][y - 2] == 3):
-            return True
-    elif click_x == x - 2 and click_y == y - 2:  # 왼쪽 위
-        if (board_array[x - 1][y] == 3 and board_array[x - 2][y] != 0 and board_array[x - 3][y] == 4 and
-            board_array[x - 2][y - 1] == 3) or \
-                (board_array[x][y - 1] == 3 and board_array[x][y - 2] != 0 and board_array[x][y - 3] == 4 and
-                 board_array[x - 1][y - 2] == 3):
-            return True
-    elif click_x == x + 2 and click_y == y + 2:  # 오른쪽 아래
-        if (board_array[x + 1][y] == 3 and board_array[x + 2][y] != 0 and board_array[x + 3][y] == 4 and
-            board_array[x + 2][y + 1] == 3) or \
-                (board_array[x][y + 1] == 3 and board_array[x][y + 2] != 0 and board_array[x][y + 3] == 4 and
-                 board_array[x + 1][y + 2] == 3):
-            return True
-    elif click_x == x - 2 and click_y == y + 2:  # 왼쪽 아래
-        if (board_array[x - 1][y] == 3 and board_array[x - 2][y] != 0 and board_array[x - 3][y] == 4 and
-            board_array[x - 2][y + 1] == 3) or \
-                (board_array[x][y + 1] == 3 and board_array[x][y + 2] != 0 and board_array[x][y + 3] == 4 and
-                 board_array[x - 1][y + 2] == 3):
-            return True
-    elif click_x == x and click_y == y - 2:  # 위쪽
-        if board_array[x][y - 1] == 3:
-            return True
-    elif click_x == x and click_y == y + 2:  # 아래쪽
-        if board_array[x][y + 1] == 3:
-            return True
-    elif click_x == x - 2 and click_y == y:  # 위쪽
-        if board_array[x - 1][y] == 3:
-            return True
-    elif click_x == x + 2 and click_y == y:  # 아래쪽
-        if board_array[x + 1][y] == 3:
-            return True
-
-    return False
-
 
 def make_graph(temp_board, pos_that_make_wall, type):
     result_board = copy.deepcopy(temp_board)
@@ -557,7 +507,7 @@ def game_black(turn):
                 elif wall_click_event(turn, "vertical"):
                     game_vertical(turn)
                 # User Check
-                elif user_checker("black"):
+                elif user_checker("black", event.pos):
                     board_array = return_board_that_set_user_array(board_array, event.pos, "black")
                     game("white")
         display_base_objects()
