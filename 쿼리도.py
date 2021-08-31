@@ -162,7 +162,6 @@ def user_checker(turn):  # 클릭한곳에 돌 이동 가능여부 판단
         if board_array[x, y - 1] == 3 and board_array[x, y - 2] != 0 and board_array[x, y - 3] == 3:
             return True
     elif click_x == x and click_y == y + 4:  # 뛰어넘기 오른쪽
-        print(board_array[x, y + 1], board_array[x, y + 2], board_array[x, y + 3])
         if board_array[x, y + 1] == 3 and board_array[x, y + 2] != 0 and board_array[x, y + 3] == 3:
             return True
     elif click_x == x - 4 and click_y == y:  # 뛰어넘기 위쪽
@@ -197,16 +196,16 @@ def user_checker(turn):  # 클릭한곳에 돌 이동 가능여부 판단
                  board_array[x - 1, y + 2] == 3):
             return True
     elif click_x == x and click_y == y - 2:  # 왼쪽
-        if board_array[x, y - 1] == 3:
+        if board_array[x, y - 1] == 3 and board_array[x, y - 2] == 0:
             return True
     elif click_x == x and click_y == y + 2:  # 오른쪽
-        if board_array[x, y + 1] == 3:
+        if board_array[x, y + 1] == 3 and board_array[x, y + 2] == 0:
             return True
     elif click_x == x - 2 and click_y == y:  # 위쪽
-        if board_array[x - 1, y] == 3:
+        if board_array[x - 1, y] == 3 and board_array[x - 2, y] == 0:
             return True
     elif click_x == x + 2 and click_y == y:  # 아래쪽
-        if board_array[x + 1, y] == 3:
+        if board_array[x + 1, y] == 3 and board_array[x + 2, y] == 0:
             return True
     return False
 
@@ -266,8 +265,6 @@ def make_graph(temp_board, pos_that_make_wall, type):
     result_board = copy.deepcopy(temp_board)
     result_board = return_board_that_add_wall(result_board, pos_that_make_wall, type)
     if result_board is None:
-        return False
-    if np.array_equal(result_board, temp_board):
         return False
     graph = {}
     for x in range(19):
