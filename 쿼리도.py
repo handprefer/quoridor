@@ -568,19 +568,23 @@ def game_white(turn):
 def return_board_that_add_wall(temp_board, pos_that_make_wall, type):
     result_board = copy.deepcopy(temp_board)
     array = click_cell(pos_that_make_wall)
-    if array[0] % 2 == 0 and array[1] % 2 == 0:
+    x = array[0]
+    y = array[1]
+    if x % 2 == 0 and y % 2 == 0:
         if type == "vertical":
-            result_board[array[0], array[1]] = 4
-            result_board[array[0] + 1, array[1]] = 4
-            result_board[array[0] - 1, array[1]] = 4
-            result_board[array[0] + 2, array[1]] = 4
-            result_board[array[0] - 2, array[1]] = 4
+            if not (result_board[x, y] == 4 or result_board[x + 1, y] == 4 or result_board[x - 1, y] == 4):
+                result_board[array[0], array[1]] = 4
+                result_board[array[0] + 1, array[1]] = 4
+                result_board[array[0] - 1, array[1]] = 4
+                result_board[array[0] + 2, array[1]] = 4
+                result_board[array[0] - 2, array[1]] = 4
         elif type == "horizon":
-            result_board[array[0], array[1]] = 4
-            result_board[array[0], array[1] + 1] = 4
-            result_board[array[0], array[1] - 1] = 4
-            result_board[array[0], array[1] + 2] = 4
-            result_board[array[0], array[1] - 2] = 4
+            if not (result_board[x, y] == 4 or result_board[x, y + 1] == 4 or result_board[x, y - 1] == 4):
+                result_board[array[0], array[1]] = 4
+                result_board[array[0], array[1] + 1] = 4
+                result_board[array[0], array[1] - 1] = 4
+                result_board[array[0], array[1] + 2] = 4
+                result_board[array[0], array[1] - 2] = 4
         return result_board
 
 
