@@ -265,6 +265,10 @@ def user_pos(type):
 def make_graph(temp_board, pos_that_make_wall, type):
     result_board = copy.deepcopy(temp_board)
     result_board = return_board_that_add_wall(result_board, pos_that_make_wall, type)
+    if result_board is None:
+        return False
+    if np.array_equal(result_board, temp_board):
+        return False
     graph = {}
     for x in range(19):
         for y in range(19):
@@ -344,6 +348,8 @@ def make_graph(temp_board, pos_that_make_wall, type):
 
 # bfs
 def wall_checker(graph, start, end):
+    if not graph:
+        return False
     queue = [start]  # idx 0: 노드, idx 1: 이동 거리
     visit = {start, }  # 방문한 노드 저장 공간
 
@@ -467,7 +473,6 @@ def game_horizon(turn):
                     game_vertical(turn)
                 # 벽을 설치하는 로직
                 elif 200 <= event.pos[0] <= 700:
-                    print(event.pos)
                     if wall_checker(
                             make_graph(board_array, event.pos, "horizon"),
                             user_cell("black"),
@@ -648,4 +653,4 @@ black_user = Object("흑.png", [203, 224], (55, 55))
 white_user = Object("백.png", [647, 224], (55, 55))
 
 if __name__ == '__main__':
-    win("white")
+    start()
