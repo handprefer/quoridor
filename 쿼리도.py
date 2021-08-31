@@ -158,17 +158,17 @@ def user_checker(turn):  # 클릭한곳에 돌 이동 가능여부 판단
     click_x = location[0]
     click_y = location[1]
 
-    if click_x == x  and click_y == y-4:  # 뛰어넘기 왼쪽
+    if click_x == x and click_y == y - 4:  # 뛰어넘기 왼쪽
         if board_array[x, y - 1] == 3 and board_array[x, y - 2] != 0 and board_array[x, y - 3] == 3:
             return True
-    elif click_x == x  and click_y == y+4:  # 뛰어넘기 오른쪽
-        print(board_array[x,y+1],board_array[x,y+2],board_array[x,y+3])
+    elif click_x == x and click_y == y + 4:  # 뛰어넘기 오른쪽
+        print(board_array[x, y + 1], board_array[x, y + 2], board_array[x, y + 3])
         if board_array[x, y + 1] == 3 and board_array[x, y + 2] != 0 and board_array[x, y + 3] == 3:
             return True
-    elif click_x == x-4 and click_y == y :  # 뛰어넘기 위쪽
+    elif click_x == x - 4 and click_y == y:  # 뛰어넘기 위쪽
         if board_array[x - 1, y] == 3 and board_array[x - 2, y] != 0 and board_array[x - 3, y] == 3:
             return True
-    elif click_x == x+4 and click_y == y :  # 뛰어넘기 아래쪽
+    elif click_x == x + 4 and click_y == y:  # 뛰어넘기 아래쪽
         if board_array[x + 1, y] == 3 and board_array[x + 2, y] != 0 and board_array[x + 3, y] == 3:
             return True
     elif click_x == x + 2 and click_y == y - 2:  # 왼쪽 아래
@@ -196,16 +196,16 @@ def user_checker(turn):  # 클릭한곳에 돌 이동 가능여부 판단
                 (board_array[x, y + 1] == 3 and board_array[x, y + 2] != 0 and board_array[x, y + 3] == 4 and
                  board_array[x - 1, y + 2] == 3):
             return True
-    elif click_x == x  and click_y == y-2:  # 왼쪽
+    elif click_x == x and click_y == y - 2:  # 왼쪽
         if board_array[x, y - 1] == 3:
             return True
-    elif click_x == x  and click_y == y+2:  # 오른쪽
+    elif click_x == x and click_y == y + 2:  # 오른쪽
         if board_array[x, y + 1] == 3:
             return True
-    elif click_x == x-2 and click_y == y :  # 위쪽
+    elif click_x == x - 2 and click_y == y:  # 위쪽
         if board_array[x - 1, y] == 3:
             return True
-    elif click_x == x+2 and click_y == y:  # 아래쪽
+    elif click_x == x + 2 and click_y == y:  # 아래쪽
         if board_array[x + 1, y] == 3:
             return True
     return False
@@ -258,13 +258,17 @@ def user_pos(type):
                 x = i
                 y = j
     return 202 + (y - 1) * 27.9, (x - 1) * 28
-  
+
 
 # 게임룰에 맞는 행동인지 체크하는 함수#####################################################################
 
 def make_graph(temp_board, pos_that_make_wall, type):
     result_board = copy.deepcopy(temp_board)
     result_board = return_board_that_add_wall(result_board, pos_that_make_wall, type)
+    if result_board is None:
+        return False
+    if np.array_equal(result_board, temp_board):
+        return False
     graph = {}
     for x in range(19):
         for y in range(19):
@@ -344,6 +348,8 @@ def make_graph(temp_board, pos_that_make_wall, type):
 
 # bfs
 def wall_checker(graph, start, end):
+    if not graph:
+        return False
     queue = [start]  # idx 0: 노드, idx 1: 이동 거리
     visit = {start, }  # 방문한 노드 저장 공간
 
@@ -365,23 +371,30 @@ def wall_checker(graph, start, end):
 def game(turn):
     display_base_objects()
     board_loading()
-    pygame.display.update()
-    while True:
-        clock.tick(3)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if user_click_event(turn):
-                    if turn == "black":
-                        game_black(turn)
-                    elif turn == "white":
-                        game_white(turn)
-                elif wall_click_event(turn, "vertical", event.pos):
-                    game_vertical(turn)
-                elif wall_click_event(turn, "horizon", event.pos):
-                    game_horizon(turn)
+    if user_cell("black")[1] == 17:
+        win("black")
+        return 0
+    elif user_cell("white")[1] == 1:
+        win("white")
+        return 0
+    else:
+        pygame.display.update()
+        while True:
+            clock.tick(3)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if user_click_event(turn):
+                        if turn == "black":
+                            game_black(turn)
+                        elif turn == "white":
+                            game_white(turn)
+                    elif wall_click_event(turn, "vertical", event.pos):
+                        game_vertical(turn)
+                    elif wall_click_event(turn, "horizon", event.pos):
+                        game_horizon(turn)
 
 
 def game_vertical(turn):
@@ -420,7 +433,10 @@ def game_vertical(turn):
                                 user_cell("white"),
                                 1
                             ) is True:
-                        board_array = return_board_that_add_wall(board_array, pygame.mouse.get_pos(), "vertical")
+                        board_array = copy.deepcopy(
+                            return_board_that_add_wall(board_array, pygame.mouse.get_pos(), "vertical"))
+                        if user_cell(turn)[1] == 17:
+                            print("win")
                         if turn == "black":
                             game("white")
                         elif turn == "white":
@@ -457,7 +473,6 @@ def game_horizon(turn):
                     game_vertical(turn)
                 # 벽을 설치하는 로직
                 elif 200 <= event.pos[0] <= 700:
-                    print(event.pos)
                     if wall_checker(
                             make_graph(board_array, event.pos, "horizon"),
                             user_cell("black"),
@@ -553,19 +568,23 @@ def game_white(turn):
 def return_board_that_add_wall(temp_board, pos_that_make_wall, type):
     result_board = copy.deepcopy(temp_board)
     array = click_cell(pos_that_make_wall)
-    if array[0] % 2 == 0 and array[1] % 2 == 0:
+    x = array[0]
+    y = array[1]
+    if x % 2 == 0 and y % 2 == 0:
         if type == "vertical":
-            result_board[array[0], array[1]] = 4
-            result_board[array[0] + 1, array[1]] = 4
-            result_board[array[0] - 1, array[1]] = 4
-            result_board[array[0] + 2, array[1]] = 4
-            result_board[array[0] - 2, array[1]] = 4
+            if not (result_board[x, y] == 4 or result_board[x + 1, y] == 4 or result_board[x - 1, y] == 4):
+                result_board[array[0], array[1]] = 4
+                result_board[array[0] + 1, array[1]] = 4
+                result_board[array[0] - 1, array[1]] = 4
+                result_board[array[0] + 2, array[1]] = 4
+                result_board[array[0] - 2, array[1]] = 4
         elif type == "horizon":
-            result_board[array[0], array[1]] = 4
-            result_board[array[0], array[1] + 1] = 4
-            result_board[array[0], array[1] - 1] = 4
-            result_board[array[0], array[1] + 2] = 4
-            result_board[array[0], array[1] - 2] = 4
+            if not (result_board[x, y] == 4 or result_board[x, y + 1] == 4 or result_board[x, y - 1] == 4):
+                result_board[array[0], array[1]] = 4
+                result_board[array[0], array[1] + 1] = 4
+                result_board[array[0], array[1] - 1] = 4
+                result_board[array[0], array[1] + 2] = 4
+                result_board[array[0], array[1] - 2] = 4
         return result_board
 
 
@@ -584,10 +603,8 @@ def return_board_that_set_user_array(temp_board, pos_that_user_go, user):
 def start():
     screen.fill((255, 255, 255))
     title_text = text("QUORIDOR", 70, 0, 0, 0)
-    start_text = text("Start", 40, 0, 0, 0)
 
     screen.blit(title_text, (275, 140))
-    screen.blit(start_text, (412, 240))
 
     pygame.display.update()
     while True:
@@ -597,13 +614,27 @@ def start():
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                pos = pygame.mouse.get_pos()
-                if 413 <= pos[0] <= 497 and 254 <= pos[1] <= 287:
-                    game("black")
-        screen.fill((255, 255, 255))
-        screen.blit(title_text, (275, 140))
-        screen.blit(start_text, (412, 240))
-        pygame.display.update()
+                board_init()
+                game("black")
+
+
+def win(user):
+    screen.fill((255, 255, 255))
+    if user == "black":
+        msg = text("Black Win", 50, 0, 0, 0)
+        screen.blit(msg, (350, 200))
+    elif user == "white":
+        msg = text("White Win", 50, 0, 0, 0)
+        screen.blit(msg, (350, 200))
+    pygame.display.update()
+    while True:
+        clock.tick(3)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                start()
 
 
 ######################################################################
@@ -626,4 +657,4 @@ black_user = Object("흑.png", [203, 224], (55, 55))
 white_user = Object("백.png", [647, 224], (55, 55))
 
 if __name__ == '__main__':
-    game("black")
+    start()
