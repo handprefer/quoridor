@@ -1,7 +1,7 @@
 import main
 
 
-def user(turn):
+def user(turn) -> tuple[int, int]:
     if turn == "black":
         position = main.black_user.pos
     else:
@@ -42,7 +42,7 @@ def user(turn):
     return int(j), int(i)
 
 
-def click(position):
+def click(position) -> tuple[int, int]:
     wall_size = 3
 
     first_x = position[0] - 198 - 56 * ((position[0] - 198) // 56)
@@ -75,4 +75,4 @@ def click(position):
         j = ((position[1] + 2) // 56) * 2 + 1
     if (position[1] + 2) % 56 == 0:
         j = ((position[1] + 2) // 56) * 2
-    return j, i
+    return int(j), int(i)

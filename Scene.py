@@ -7,6 +7,7 @@ import Cell
 import Display
 import Event
 import main
+import Pos
 
 
 def game(turn):
@@ -42,7 +43,7 @@ def white(turn):
     Display.base_objects()
     Display.board()
     pygame.display.update()
-    temp_user = main.Object("백.png", [0, 0], (55, 55))
+    temp_user = main.Object("백.png", list(pygame.mouse.get_pos()), (55, 55))
     while True:
         main.clock.tick(59)
         for event in pygame.event.get():
@@ -56,9 +57,9 @@ def white(turn):
                     horizon(turn)
                 elif Event.Click.wall(turn, "vertical", event.pos):
                     vertical(turn)
-                # 벽을 설치하는 로직
                 elif Event.Check.user(turn, event.pos):
                     main.board_array = Board.Modify.user(main.board_array, event.pos, turn)
+                    main.white_user.pos = Pos.white()
                     game("black")
         Display.base_objects()
         Display.board()
@@ -72,7 +73,7 @@ def black(turn):
     Display.base_objects()
     Display.board()
     pygame.display.update()
-    temp_user = main.Object("흑.png", [0, 0], (55, 55))
+    temp_user = main.Object("흑.png", list(pygame.mouse.get_pos()), (55, 55))
     while True:
         main.clock.tick(59)
         for event in pygame.event.get():
@@ -80,7 +81,7 @@ def black(turn):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEMOTION:
-                temp_user.pos = pygame.mouse.get_pos()
+                temp_user.pos = event.pos
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if Event.Click.wall(turn, "horizon", event.pos):
                     horizon(turn)
@@ -89,6 +90,7 @@ def black(turn):
                 # User Check
                 elif Event.Check.user(turn, event.pos):
                     main.board_array = Board.Modify.user(main.board_array, event.pos, "black")
+                    main.black_user.pos = Pos.black()
                     game("white")
         Display.base_objects()
         Display.board()
@@ -110,7 +112,7 @@ def horizon(turn):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEMOTION:
-                temp_wall.pos = pygame.mouse.get_pos()
+                temp_wall.pos = event.pos
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if Event.Click.user(turn, event.pos):
                     if turn == "black":
@@ -154,7 +156,7 @@ def vertical(turn):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEMOTION:
-                temp_wall.pos = pygame.mouse.get_pos()
+                temp_wall.pos = event.pos
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # 돌을 클릭한 경우
                 if Event.Click.user(turn, event.pos):
@@ -178,7 +180,7 @@ def vertical(turn):
                                 1
                             ) is True:
                         main.board_array = copy.deepcopy(
-                            Board.Add.wall(main.board_array, pygame.mouse.get_pos(), "vertical"))
+                            Board.Add.wall(main.board_array, event.pos, "vertical"))
                         if Cell.user(turn)[1] == 17:
                             print("win")
                         if turn == "black":

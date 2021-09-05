@@ -1,6 +1,5 @@
 import main
 import pygame
-import Pos
 
 
 def base_objects():
@@ -31,9 +30,6 @@ def board():
                         main.screen.blit(temp_vertical.img, [200 + 27.8 * x, 28 * (y - 1)])
                     elif y % 2 == 0:
                         main.screen.blit(temp_horizon.img, [202 + 27.8 * (x - 1), 27.7 * y])
-        # Todo: pos 수정 명령어 다른 함수로 옮겨야 함
-        main.black_user.pos = Pos.user("black")
-        main.white_user.pos = Pos.user("white")
         main.screen.blits(
             (
                 (main.black_user.img, main.black_user.pos),
