@@ -149,14 +149,23 @@ def make_graph(pos_that_make_wall, user):
                         # 돌에 막힌 경우
                         elif (result_board[x + 2, y] == 1 or 2) and result_board[x + 1, y] == 3:
                             # 돌의 왼쪽이 뚫린 경우
-                            if result_board[x + 2, y - 2] == 0 and result_board[x + 2, y - 1] == 3:
-                                graph[(x, y)].append((x + 2, y - 2))
+                            try:
+                                if result_board[x + 2, y - 2] == 0 and result_board[x + 2, y - 1] == 3:
+                                    graph[(x, y)].append((x + 2, y - 2))
+                            except IndexError:
+                                ...
                             # 돌의 오른쪽이 뚫린 경우
-                            if result_board[x + 2, y + 2] == 0 and result_board[x + 2, y + 1] == 3:
-                                graph[(x, y)].append((x + 2, y + 2))
+                            try:
+                                if result_board[x + 2, y + 2] == 0 and result_board[x + 2, y + 1] == 3:
+                                    graph[(x, y)].append((x + 2, y + 2))
+                            except IndexError:
+                                ...
                             # 돌의 아래쪽이 뚫린 경우
-                            if result_board[x + 4, y] == 0 and result_board[x + 3, y] == 3:
-                                graph[(x, y)].append((x + 4, y))
+                            try:
+                                if result_board[x + 4, y] == 0 and result_board[x + 3, y] == 3:
+                                    graph[(x, y)].append((x + 4, y))
+                            except IndexError:
+                                ...
                     except IndexError:
                         ...
                     try:
@@ -166,31 +175,49 @@ def make_graph(pos_that_make_wall, user):
                         # 돌에 막힌 경우
                         elif (result_board[x - 2, y] == 1 or 2) and result_board[x - 1, y] == 3:
                             # 돌의 왼쪽이 뚫린 경우
-                            if result_board[x - 2, y - 2] == 0 and result_board[x - 2, y - 1] == 3:
-                                graph[(x, y)].append((x - 2, y - 2))
+                            try:
+                                if result_board[x - 2, y - 2] == 0 and result_board[x - 2, y - 1] == 3:
+                                    graph[(x, y)].append((x - 2, y - 2))
+                            except IndexError:
+                                ...
                             # 돌의 오른쪽이 뚫린 경우
-                            if result_board[x - 2, y + 2] == 0 and result_board[x - 2, y + 1] == 3:
-                                graph[(x, y)].append((x - 2, y + 2))
+                            try:
+                                if result_board[x - 2, y + 2] == 0 and result_board[x - 2, y + 1] == 3:
+                                    graph[(x, y)].append((x - 2, y + 2))
+                            except IndexError:
+                                ...
                             # 돌의 위쪽이 뚫린 경우
-                            if result_board[x - 4, y] == 0 and result_board[x - 3, y] == 3:
-                                graph[(x, y)].append((x - 4, y))
+                            try:
+                                if result_board[x - 4, y] == 0 and result_board[x - 3, y] == 3:
+                                    graph[(x, y)].append((x - 4, y))
+                            except IndexError:
+                                ...
                     except IndexError:
                         ...
                     try:
                         # 오른쪽으로 갈 수 있는 경우
                         if result_board[x, y + 2] == 0 and result_board[x, y + 1] == 3:
                             graph[(x, y)].append((x, y + 2))
-                            # 돌에 막힌 경우
+                        # 돌에 막힌 경우
                         elif (result_board[x, y + 2] == 1 or 2) and result_board[x, y + 1] == 3:
                             # 돌의 위쪽이 뚫린 경우
-                            if result_board[x - 2, y + 2] == 0 and result_board[x - 1, y + 2] == 3:
-                                graph[(x, y)].append((x - 2, y + 2))
+                            try:
+                                if result_board[x - 2, y + 2] == 0 and result_board[x - 1, y + 2] == 3:
+                                    graph[(x, y)].append((x - 2, y + 2))
+                            except IndexError:
+                                ...
                             # 돌의 오른쪽이 뚫린 경우
-                            if result_board[x, y + 4] == 0 and result_board[x, y + 3] == 3:
-                                graph[(x, y)].append((x, y + 4))
+                            try:
+                                if result_board[x, y + 4] == 0 and result_board[x, y + 3] == 3:
+                                    graph[(x, y)].append((x, y + 4))
+                            except IndexError:
+                                ...
                             # 돌의 아래쪽이 뚫린 경우
-                            if result_board[x + 2, y + 2] == 0 and result_board[x + 1, y + 2] == 3:
-                                graph[(x, y)].append((x + 2, y + 2))
+                            try:
+                                if result_board[x + 2, y + 2] == 0 and result_board[x + 1, y + 2] == 3:
+                                    graph[(x, y)].append((x + 2, y + 2))
+                            except IndexError:
+                                ...
                     except IndexError:
                         ...
                     try:
@@ -200,14 +227,23 @@ def make_graph(pos_that_make_wall, user):
                         # 돌에 막힌 경우
                         elif (result_board[x, y - 2] == 1 or 2) and result_board[x, y - 1] == 3:
                             # 돌의 아래쪽이 뚫린 경우
-                            if result_board[x + 2, y - 2] == 0 and result_board[x + 1, y - 2] == 3:
-                                graph[(x, y)].append((x + 2, y - 2))
+                            try:
+                                if result_board[x + 2, y - 2] == 0 and result_board[x + 1, y - 2] == 3:
+                                    graph[(x, y)].append((x + 2, y - 2))
+                            except IndexError:
+                                ...
                             # 돌의 위쪽이 뚫린 경우
-                            if result_board[x - 2, y - 2] == 0 and result_board[x - 1, y - 2] == 3:
-                                graph[(x, y)].append((x - 2, y - 2))
+                            try:
+                                if result_board[x - 2, y - 2] == 0 and result_board[x - 1, y - 2] == 3:
+                                    graph[(x, y)].append((x - 2, y - 2))
+                            except IndexError:
+                                ...
                             # 돌의 왼쪽이 뚫린 경우
-                            if result_board[x, y - 4] == 0 and result_board[x, y - 3] == 3:
-                                graph[(x, y)].append((x, y - 4))
+                            try:
+                                if result_board[x, y - 4] == 0 and result_board[x, y - 3] == 3:
+                                    graph[(x, y)].append((x, y - 4))
+                            except IndexError:
+                                ...
                     except IndexError:
                         ...
     return graph
