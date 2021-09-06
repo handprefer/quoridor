@@ -21,11 +21,11 @@ def game(turn):
         return 0
     else:
         if turn == "black":
-            text = main.text("흑 차례", 30, 0, 0, 0)
-            main.screen.blit(text, (50, 400))
+            text = main.text("Black", 30, 0, 0, 0)
+            main.screen.blit(text, (70, 400))
         else:
-            text = main.text("백 차례", 30, 0, 0, 0)
-            main.screen.blit(text, (750, 400))
+            text = main.text("White", 30, 0, 0, 0)
+            main.screen.blit(text, (770, 400))
         pygame.display.update()
         while True:
             main.clock.tick(3)
@@ -46,7 +46,7 @@ def game(turn):
 
 
 def white(turn):
-    text = main.text("백 차례", 30, 0, 0, 0)
+    text = main.text("White", 30, 0, 0, 0)
     Display.base_objects()
     Display.board()
     pygame.display.update()
@@ -70,7 +70,7 @@ def white(turn):
                     game("black")
         Display.base_objects()
         Display.board()
-        main.screen.blit(text, (750, 400))
+        main.screen.blit(text, (770, 400))
         main.screen.blit(temp_user.img,
                          [temp_user.pos[0] - temp_user.size[0] // 2, temp_user.pos[1] - temp_user.size[1] // 2]
                          )
@@ -78,7 +78,7 @@ def white(turn):
 
 
 def black(turn):
-    text = main.text("흑 차례", 30, 0, 0, 0)
+    text = main.text("Black", 30, 0, 0, 0)
     Display.base_objects()
     Display.board()
     pygame.display.update()
@@ -103,7 +103,7 @@ def black(turn):
                     game("white")
         Display.base_objects()
         Display.board()
-        main.screen.blit(text, (50, 400))
+        main.screen.blit(text, (70, 400))
         main.screen.blit(temp_user.img,
                          [temp_user.pos[0] - temp_user.size[0] // 2, temp_user.pos[1] - temp_user.size[1] // 2]
                          )
@@ -116,11 +116,11 @@ def horizon(turn):
     pygame.display.update()
     temp_wall = main.Object("가로벽big.png", [0, 0], (108, 4))
     if turn == "black":
-        text = main.text("흑 차례", 30, 0, 0, 0)
-        main.screen.blit(text, (50, 400))
+        text = main.text("Black", 30, 0, 0, 0)
+        main.screen.blit(text, (70, 400))
     else:
-        text = main.text("백 차례", 30, 0, 0, 0)
-        main.screen.blit(text, (750, 400))
+        text = main.text("White", 30, 0, 0, 0)
+        main.screen.blit(text, (770, 400))
     while True:
         main.clock.tick(59)
         for event in pygame.event.get():
@@ -163,9 +163,9 @@ def horizon(turn):
         Display.base_objects()
         Display.board()
         if turn == "black":
-            main.screen.blit(text, (50, 400))
+            main.screen.blit(text, (70, 400))
         else:
-            main.screen.blit(text, (750, 400))
+            main.screen.blit(text, (770, 400))
         main.screen.blit(temp_wall.img,
                          [temp_wall.pos[0] - temp_wall.size[0] // 2, temp_wall.pos[1] - temp_wall.size[1] // 2]
                          )
@@ -178,11 +178,11 @@ def vertical(turn):
     pygame.display.update()
     temp_wall = main.Object("세로벽big.png", [0, 0], (4, 108))
     if turn == "black":
-        text = main.text("흑 차례", 30, 0, 0, 0)
-        main.screen.blit(text, (50, 400))
+        text = main.text("Black", 30, 0, 0, 0)
+        main.screen.blit(text, (70, 400))
     else:
-        text = main.text("백 차례", 30, 0, 0, 0)
-        main.screen.blit(text, (750, 400))
+        text = main.text("White", 30, 0, 0, 0)
+        main.screen.blit(text, (770, 400))
     while True:
         main.clock.tick(59)
         for event in pygame.event.get():
@@ -228,9 +228,9 @@ def vertical(turn):
         Display.base_objects()
         Display.board()
         if turn == "black":
-            main.screen.blit(text, (50, 400))
+            main.screen.blit(text, (70, 400))
         else:
-            main.screen.blit(text, (750, 400))
+            main.screen.blit(text, (770, 400))
         main.screen.blit(temp_wall.img,
                          [temp_wall.pos[0] - temp_wall.size[0] // 2, temp_wall.pos[1] - temp_wall.size[1] // 2]
                          )
