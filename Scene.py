@@ -1,13 +1,13 @@
 import sys
-import copy
+
 import pygame
 
 import Board
 import Cell
 import Display
 import Event
-import main
 import Pos
+import main
 
 
 def game(turn):
@@ -138,16 +138,24 @@ def horizon(turn):
                 elif Event.Click.wall(turn, "vertical", event.pos):
                     vertical(turn)
                 # 벽을 설치하는 로직
+                # 보드판 안을 클릭했는지 확인
                 elif 200 <= event.pos[0] <= 700:
+                    graph = Event.make_graph(event.pos, "horizon")
                     if Event.Check.wall(
-                            Event.make_graph(main.board_array, event.pos, "horizon"),
+                            graph,
                             Cell.user("black"),
-                            17) is True and \
+                            17,
+                            Cell.click(event.pos),
+                            "horizon"
+                    ) is True and \
                             Event.Check.wall(
-                                Event.make_graph(main.board_array, event.pos, "horizon"),
+                                graph,
                                 Cell.user("white"),
-                                1) is True:
-                        main.board_array = Board.Add.wall(main.board_array, event.pos, "horizon")
+                                1,
+                                Cell.click(event.pos),
+                                "horizon"
+                            ) is True:
+                        main.board_array = Board.Add.wall(Cell.click(event.pos), "horizon")
                         if turn == "black":
                             game("white")
                         elif turn == "white":
@@ -196,17 +204,21 @@ def vertical(turn):
                 # 벽을 설치하는 로직
                 elif 200 <= event.pos[0] <= 700:
                     if Event.Check.wall(
-                            Event.make_graph(main.board_array, event.pos, "vertical"),
+                            Event.make_graph(event.pos, "vertical"),
                             Cell.user("black"),
-                            17
+                            17,
+                            Cell.click(event.pos),
+                            "vertical"
                     ) is True and \
                             Event.Check.wall(
-                                Event.make_graph(main.board_array, event.pos, "vertical"),
+                                Event.make_graph(event.pos, "vertical"),
                                 Cell.user("white"),
-                                1
+                                1,
+                                Cell.click(event.pos),
+                                "vertical"
                             ) is True:
-                        main.board_array = copy.deepcopy(
-                            Board.Add.wall(main.board_array, event.pos, "vertical"))
+                        print(1)
+                        main.board_array = Board.Add.wall(Cell.click(event.pos), "vertical")
                         if Cell.user(turn)[1] == 17:
                             print("win")
                         if turn == "black":

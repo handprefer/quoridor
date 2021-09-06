@@ -1,7 +1,8 @@
-import main
-import Cell
 import copy
+
 import Board
+import Cell
+import main
 
 
 class Click:
@@ -36,32 +37,39 @@ class Click:
         return False
 
 
+# Todo: 여기서 버그걸림
 class Check:
     @classmethod
-    def wall(cls, graph, start, end):
+    def wall(cls, graph, start, end, cell, turn):
         if not graph:
             return False
-        queue = [start]  # idx 0: 노드, idx 1: 이동 거리
-        visit = {start, }  # 방문한 노드 저장 공간
+        x, y = cell
+        result_board = copy.deepcopy(main.board_array)
+        if x % 2 == 0 and y % 2 == 0:
+            if turn == "vertical":
+                if result_board[x, y] == 4 or result_board[x + 1, y] == 4 or result_board[x - 1, y] == 4:
+                    return False
+            elif turn == "horizon":
+                if result_board[x, y] == 4 or result_board[x, y + 1] == 4 or result_board[x, y - 1] == 4:
+                    return False
+            queue = [start]  # idx 0: 노드, idx 1: 이동 거리
+            visit = {start, }  # 방문한 노드 저장 공간Board.Add.wall
+            # 돌이 갈 수 있는 지 확인
+            while queue:
+                node = queue.pop(0)
+                for near_node in graph[node]:
+                    if near_node not in visit:
+                        if near_node[1] == end:
+                            return True
 
-        while queue:
-            node = queue.pop(0)
-            for near_node in graph[node]:
-                if near_node not in visit:
-                    if near_node[1] == end:
-                        return True
-
-                    visit.add(near_node)
-                    queue.append(near_node)
+                        visit.add(near_node)
+                        queue.append(near_node)
         return False
 
     @classmethod
     def user(cls, turn, pos):  # 클릭한곳에 돌 이동 가능여부 판단
-        location = Cell.click(pos)
-        x = Cell.user(turn)[0]
-        y = Cell.user(turn)[1]
-        click_x = location[0]
-        click_y = location[1]
+        x, y = Cell.user(turn)
+        click_x, click_y = Cell.click(pos)
 
         if click_x == x and click_y == y - 4:  # 뛰어넘기 왼쪽
             if main.board_array[x, y - 1] == 3 and main.board_array[x, y - 2] != 0 and main.board_array[x, y - 3] == 3:
@@ -123,9 +131,9 @@ class Check:
         return False
 
 
-def make_graph(temp_board, pos_that_make_wall, user):
-    result_board = copy.deepcopy(temp_board)
-    result_board = Board.Add.wall(result_board, pos_that_make_wall, user)
+def make_graph(pos_that_make_wall, user):
+    result_board = copy.deepcopy(main.board_array)
+    result_board = Board.Add.wall(Cell.click(pos_that_make_wall), user)
     if result_board is None:
         return False
     graph = {}
