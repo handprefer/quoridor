@@ -1,21 +1,31 @@
-from numpy import zeros
 import pygame
+from numpy import zeros
+
 import Scene
 
 
-def board_init():
+def board_init(board):
+    temp = board[:]
     for i in range(19):
         for j in range(19):
             if i % 2 == 1 and j % 2 == 1:
-                board_array[i, j] = 0
+                temp[i, j] = 0
             else:
-                board_array[i, j] = 3
+                temp[i, j] = 3
     for i in range(19):
         for j in range(19):
             if j == 0 or j == 18 or i == 0 or i == 18:
-                board_array[i, j] = 4
-    board_array[9, 1] = 1
-    board_array[9, 17] = 2
+                temp[i, j] = 4
+    temp[9, 1] = 1
+    temp[9, 17] = 2
+    return temp
+
+
+def game_reset(board):
+    temp = board_init(board)
+    black_user.pos = [203, 224]
+    white_user.pos = [647, 224]
+    return temp
 
 
 def text(text_value, text_size, c1, c2, c3):
@@ -37,13 +47,8 @@ pygame.display.set_caption("쿼리도")
 clock = pygame.time.Clock()
 
 board_array = zeros((19, 19))
-board_init()
+board_array = board_init(board_array)
 
-board = Object("판.png", [200, 0], (500, 500))
-horizon_wall1 = Object("가로벽big.png", [44, 100], (108, 4))
-vertical_wall1 = Object("세로벽big.png", [97, 190], (4, 108))
-horizon_wall2 = Object("가로벽big.png", [744, 100], (108, 4))
-vertical_wall2 = Object("세로벽big.png", [797, 190], (4, 108))
 black_user = Object("흑.png", [203, 224], (55, 55))
 white_user = Object("백.png", [647, 224], (55, 55))
 

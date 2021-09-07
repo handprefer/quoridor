@@ -7,6 +7,7 @@ import main
 class Add:
     @classmethod
     def wall(cls, cell, turn):
+        import copy
         # cell 벽을 추가할 좌표
         result_board = copy.deepcopy(main.board_array)
         x, y = cell

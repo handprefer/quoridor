@@ -2,6 +2,7 @@ import copy
 
 import Board
 import Cell
+import Scene
 import main
 
 
@@ -37,7 +38,6 @@ class Click:
         return False
 
 
-# Todo: 여기서 버그걸림
 class Check:
     @classmethod
     def wall(cls, graph, start, end, cell, turn):
@@ -129,6 +129,17 @@ class Check:
             if main.board_array[x + 1, y] == 3 and main.board_array[x + 2, y] == 0:
                 return True
         return False
+
+    @classmethod
+    def win(cls, func):
+        def wrapper(*args, **kwargs):
+            if Cell.user("black")[1] == 17:
+                Scene.win("black")
+            elif Cell.user("white")[1] == 1:
+                Scene.win("white")
+            func(*args, **kwargs)
+
+        return wrapper
 
 
 def make_graph(pos_that_make_wall, user):
