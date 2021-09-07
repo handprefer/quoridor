@@ -1,8 +1,12 @@
-import main
 import pygame
+
+board_img = pygame.image.load("판.png")
+horizon_wall_img = pygame.image.load("가로벽big.png")
+vertical_wall_img = pygame.image.load("세로벽big.png")
 
 
 def base_objects():
+    import main
     main.screen.fill((255, 255, 255))
     pygame.draw.rect(main.screen, (0, 0, 0), [33, 40, 130, 130])
     pygame.draw.rect(main.screen, (0, 0, 0), [33, 180, 130, 130])
@@ -10,16 +14,17 @@ def base_objects():
     pygame.draw.rect(main.screen, (0, 0, 0), [733, 180, 130, 130])
     main.screen.blits(
         (
-            (main.board.img, main.board.pos),
-            (main.horizon_wall1.img, main.horizon_wall1.pos),
-            (main.horizon_wall2.img, main.horizon_wall2.pos),
-            (main.vertical_wall1.img, main.vertical_wall1.pos),
-            (main.vertical_wall2.img, main.vertical_wall2.pos)
+            (board_img, [200, 0]),
+            (horizon_wall_img, [44, 100]),
+            (horizon_wall_img, [744, 100]),
+            (vertical_wall_img, [97, 190]),
+            (vertical_wall_img, [797, 190])
         )
     )
 
 
 def board():
+    import main
     temp_vertical = main.Object("세로벽.png", [0, 0], (3, 111))
     temp_horizon = main.Object("가로벽.png", [0, 0], (111, 3))
     for y in range(19):
@@ -36,3 +41,13 @@ def board():
                 (main.white_user.img, main.white_user.pos)
             )
         )
+
+
+def base(func):
+    def wrapper(*args, **kwargs):
+        base_objects()
+        board()
+        pygame.display.update()
+        func(*args, **kwargs)
+
+    return wrapper

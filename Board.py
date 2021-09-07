@@ -1,34 +1,25 @@
-import copy
-import Cell
-
-
 class Add:
     @classmethod
-    def wall(cls, temp_board, pos_that_add_wall, turn):
-        result_board = copy.deepcopy(temp_board)
-        array = Cell.click(pos_that_add_wall)
-        x, y = array
-        if x % 2 == 0 and y % 2 == 0:
-            if turn == "vertical":
-                if not (result_board[x, y] == 4 or result_board[x + 1, y] == 4 or result_board[x - 1, y] == 4):
-                    result_board[array[0], array[1]] = 4
-                    result_board[array[0] + 1, array[1]] = 4
-                    result_board[array[0] - 1, array[1]] = 4
-                    result_board[array[0] + 2, array[1]] = 4
-                    result_board[array[0] - 2, array[1]] = 4
-            elif turn == "horizon":
-                if not (result_board[x, y] == 4 or result_board[x, y + 1] == 4 or result_board[x, y - 1] == 4):
-                    result_board[array[0], array[1]] = 4
-                    result_board[array[0], array[1] + 1] = 4
-                    result_board[array[0], array[1] - 1] = 4
-                    result_board[array[0], array[1] + 2] = 4
-                    result_board[array[0], array[1] - 2] = 4
-            return result_board
+    def wall(cls, cell, turn):
+        import copy, main
+        # cell 벽을 추가할 좌표
+        result_board = copy.deepcopy(main.board_array)
+        x, y = cell
+        if turn == "vertical":
+            result_board[x, y] = 4
+            result_board[x + 1, y] = 4
+            result_board[x - 1, y] = 4
+        elif turn == "horizon":
+            result_board[x, y] = 4
+            result_board[x, y + 1] = 4
+            result_board[x, y - 1] = 4
+        return result_board
 
 
 class Modify:
     @classmethod
     def user(cls, temp_board, pos_that_user_go, user):
+        import copy, Cell
         user_array = Cell.user(user)
         result_board = copy.deepcopy(temp_board)
         array_that_user_go = Cell.click(pos_that_user_go)
