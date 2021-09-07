@@ -48,8 +48,8 @@ clock = pygame.time.Clock()
 board_array = zeros((19, 19))
 board_array = board_init(board_array)
 
-black_user = Object("흑.png", [203, 224], (55, 55))
-white_user = Object("백.png", [647, 224], (55, 55))
+black_user = Object("img/흑.png", [203, 224], (55, 55))
+white_user = Object("img/백.png", [647, 224], (55, 55))
 
 if __name__ == '__main__':
     import Scene
