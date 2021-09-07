@@ -1,13 +1,7 @@
-import copy
-
-import Cell
-import main
-
-
 class Add:
     @classmethod
     def wall(cls, cell, turn):
-        import copy
+        import copy, main
         # cell 벽을 추가할 좌표
         result_board = copy.deepcopy(main.board_array)
         x, y = cell
@@ -25,6 +19,7 @@ class Add:
 class Modify:
     @classmethod
     def user(cls, temp_board, pos_that_user_go, user):
+        import copy, Cell
         user_array = Cell.user(user)
         result_board = copy.deepcopy(temp_board)
         array_that_user_go = Cell.click(pos_that_user_go)

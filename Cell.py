@@ -1,7 +1,5 @@
-import main
-
-
 def user(turn) -> tuple[int, int]:
+    import main
     if turn == "black":
         position = main.black_user.pos
     else:

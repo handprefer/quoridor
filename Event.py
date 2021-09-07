@@ -1,14 +1,7 @@
-import copy
-
-import Board
-import Cell
-import Scene
-import main
-
-
 class Click:
     @classmethod
     def user(cls, user, click_pos):
+        import main
         if user == "black":
             if main.black_user.pos[0] < click_pos[0] < main.black_user.pos[0] + 55 and \
                     main.black_user.pos[1] < click_pos[1] < main.black_user.pos[1] + 55:
@@ -41,6 +34,7 @@ class Click:
 class Check:
     @classmethod
     def wall(cls, graph, start, end, cell, turn):
+        import main, copy
         if not graph:
             return False
         x, y = cell
@@ -68,6 +62,7 @@ class Check:
 
     @classmethod
     def user(cls, turn, pos):  # 클릭한곳에 돌 이동 가능여부 판단
+        import Cell, main
         x, y = Cell.user(turn)
         click_x, click_y = Cell.click(pos)
 
@@ -132,6 +127,7 @@ class Check:
 
     @classmethod
     def win(cls, func):
+        import Cell, Scene
         def wrapper(*args, **kwargs):
             if Cell.user("black")[1] == 17:
                 Scene.win("black")
@@ -143,6 +139,7 @@ class Check:
 
 
 def make_graph(pos_that_make_wall, user):
+    import copy, Board, Cell, main
     result_board = copy.deepcopy(main.board_array)
     result_board = Board.Add.wall(Cell.click(pos_that_make_wall), user)
     if result_board is None:

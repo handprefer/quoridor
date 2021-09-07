@@ -1,7 +1,5 @@
-import main
-
-
 def black():
+    import main
     x, y = 0, 0
 
     for i in range(19):
@@ -13,6 +11,7 @@ def black():
 
 
 def white():
+    import main
     x, y = 0, 0
 
     for i in range(19):

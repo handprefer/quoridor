@@ -1,8 +1,6 @@
 import pygame
 from numpy import zeros
 
-import Scene
-
 
 def board_init(board):
     temp = board[:]
@@ -29,6 +27,7 @@ def game_reset(board):
 
 
 def text(text_value, text_size, c1, c2, c3):
+    import pygame
     font = pygame.font.SysFont('malgungothic', text_size)
     letter = font.render(text_value, True, (c1, c2, c3))
     return letter
@@ -53,4 +52,6 @@ black_user = Object("흑.png", [203, 224], (55, 55))
 white_user = Object("백.png", [647, 224], (55, 55))
 
 if __name__ == '__main__':
+    import Scene
+
     Scene.start()

@@ -1,13 +1,12 @@
 import pygame
 
-import main
-
 board_img = pygame.image.load("판.png")
 horizon_wall_img = pygame.image.load("가로벽big.png")
 vertical_wall_img = pygame.image.load("세로벽big.png")
 
 
 def base_objects():
+    import main
     main.screen.fill((255, 255, 255))
     pygame.draw.rect(main.screen, (0, 0, 0), [33, 40, 130, 130])
     pygame.draw.rect(main.screen, (0, 0, 0), [33, 180, 130, 130])
@@ -25,6 +24,7 @@ def base_objects():
 
 
 def board():
+    import main
     temp_vertical = main.Object("세로벽.png", [0, 0], (3, 111))
     temp_horizon = main.Object("가로벽.png", [0, 0], (111, 3))
     for y in range(19):

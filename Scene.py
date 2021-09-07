@@ -1,18 +1,11 @@
-import sys
-
-import pygame
-
-import Board
-import Cell
 import Display
 import Event
-import Pos
-import main
 
 
 @Event.Check.win
 @Display.base
 def game(turn):
+    import main, pygame, sys
     if turn == "black":
         text = main.text("Black", 30, 0, 0, 0)
         main.screen.blit(text, (70, 400))
@@ -40,6 +33,11 @@ def game(turn):
 
 @Display.base
 def white(turn):
+    import main
+    import sys
+    import pygame
+    import Board
+    import Pos
     text = main.text("White", 30, 0, 0, 0)
     temp_user = main.Object("백.png", list(pygame.mouse.get_pos()), (55, 55))
     while 1:
@@ -70,6 +68,11 @@ def white(turn):
 
 @Display.base
 def black(turn):
+    import main
+    import pygame
+    import sys
+    import Board
+    import Pos
     text = main.text("Black", 30, 0, 0, 0)
     temp_user = main.Object("흑.png", list(pygame.mouse.get_pos()), (55, 55))
     while 1:
@@ -101,6 +104,11 @@ def black(turn):
 
 @Display.base
 def horizon(turn):
+    import main
+    import pygame
+    import sys
+    import Cell
+    import Board
     temp_wall = main.Object("가로벽big.png", list(pygame.mouse.get_pos()), (108, 4))
     if turn == "black":
         text = main.text("Black", 30, 0, 0, 0)
@@ -162,6 +170,11 @@ def horizon(turn):
 
 @Display.base
 def vertical(turn):
+    import main
+    import pygame
+    import sys
+    import Cell
+    import Board
     temp_wall = main.Object("세로벽big.png", list(pygame.mouse.get_pos()), (4, 108))
     if turn == "black":
         text = main.text("Black", 30, 0, 0, 0)
@@ -224,6 +237,9 @@ def vertical(turn):
 
 
 def win(user):
+    import main
+    import pygame
+    import sys
     main.screen.fill((255, 255, 255))
     if user == "black":
         msg = main.text("Black Win", 50, 0, 0, 0)
@@ -243,6 +259,9 @@ def win(user):
 
 
 def start():
+    import main
+    import pygame
+    import sys
     main.screen.fill((255, 255, 255))
     title_text = main.text("QUORIDOR", 70, 0, 0, 0)
 
