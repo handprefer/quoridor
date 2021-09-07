@@ -1,8 +1,8 @@
 import pygame
 
-board_img = pygame.image.load("판.png")
-horizon_wall_img = pygame.image.load("가로벽big.png")
-vertical_wall_img = pygame.image.load("세로벽big.png")
+board_img = pygame.image.load("img/판.png")
+horizon_wall_img = pygame.image.load("img/가로벽big.png")
+vertical_wall_img = pygame.image.load("img/세로벽big.png")
 
 
 def base_objects():
@@ -25,8 +25,8 @@ def base_objects():
 
 def board():
     import main
-    temp_vertical = main.Object("세로벽.png", [0, 0], (3, 111))
-    temp_horizon = main.Object("가로벽.png", [0, 0], (111, 3))
+    temp_vertical = main.Object("img/세로벽.png", [0, 0], (3, 111))
+    temp_horizon = main.Object("img/가로벽.png", [0, 0], (111, 3))
     for y in range(19):
         for x in range(19):
             if main.board_array[y, x] == 4:

@@ -39,7 +39,7 @@ def white(turn):
     import Board
     import Pos
     text = main.text("White", 30, 0, 0, 0)
-    temp_user = main.Object("백.png", list(pygame.mouse.get_pos()), (55, 55))
+    temp_user = main.Object("img/백.png", list(pygame.mouse.get_pos()), (55, 55))
     while 1:
         main.clock.tick(59)
         for event in pygame.event.get():
@@ -74,7 +74,7 @@ def black(turn):
     import Board
     import Pos
     text = main.text("Black", 30, 0, 0, 0)
-    temp_user = main.Object("흑.png", list(pygame.mouse.get_pos()), (55, 55))
+    temp_user = main.Object("img/흑.png", list(pygame.mouse.get_pos()), (55, 55))
     while 1:
         main.clock.tick(59)
         for event in pygame.event.get():
@@ -109,7 +109,7 @@ def horizon(turn):
     import sys
     import Cell
     import Board
-    temp_wall = main.Object("가로벽big.png", list(pygame.mouse.get_pos()), (108, 4))
+    temp_wall = main.Object("img/가로벽big.png", list(pygame.mouse.get_pos()), (108, 4))
     if turn == "black":
         text = main.text("Black", 30, 0, 0, 0)
         main.screen.blit(text, (70, 400))
@@ -175,7 +175,7 @@ def vertical(turn):
     import sys
     import Cell
     import Board
-    temp_wall = main.Object("세로벽big.png", list(pygame.mouse.get_pos()), (4, 108))
+    temp_wall = main.Object("img/세로벽big.png", list(pygame.mouse.get_pos()), (4, 108))
     if turn == "black":
         text = main.text("Black", 30, 0, 0, 0)
         main.screen.blit(text, (70, 400))

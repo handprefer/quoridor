@@ -139,8 +139,7 @@ class Check:
 
 
 def make_graph(pos_that_make_wall, user):
-    import copy, Board, Cell, main
-    result_board = copy.deepcopy(main.board_array)
+    import Board, Cell
     result_board = Board.Add.wall(Cell.click(pos_that_make_wall), user)
     if result_board is None:
         return False
